@@ -23,3 +23,17 @@ def get_all():
     except Exception as e:
         logging.error(f"Failed to retrieve data. Error: {e}")
         return None
+
+
+def get_by_name(manga_name):
+    try:
+        rows = get_all()
+        if len(rows) == 0:
+            return None
+
+        mangas = filter(lambda m: m.title == manga_name, rows)
+        return next(mangas, None)
+
+    except Exception as e:
+        logging.error(f"Failed to retrieve data. Error: {e}")
+        return None

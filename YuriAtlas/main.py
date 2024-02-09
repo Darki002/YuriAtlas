@@ -14,6 +14,11 @@ def main():
         print(c.publication)
         print(c.link)
 
+    print('-------------')
+
+    cp = SpreadSheetAccess.get_by_name('Citrus+')
+    print(cp.title)
+
 
 if __name__ == '__main__':
     main()
