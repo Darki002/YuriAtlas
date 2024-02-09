@@ -1,5 +1,10 @@
+import SpreadSheetAccess.SpreadSheetAccess as Ssa
+
+
 def main():
-    print("Hello World!")
+    rows = Ssa.get_all()
+    for row in rows:
+        print(row)
 
 
 if __name__ == '__main__':
