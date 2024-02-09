@@ -1,5 +1,5 @@
-import gspread
 from google.oauth2 import service_account
+import gspread
 
 
 def _get_worksheet(sheet_name):
@@ -7,10 +7,10 @@ def _get_worksheet(sheet_name):
         './SpreadSheetAccess/yuriatlas-ba7416ea8160.json',
         scopes=['https://www.googleapis.com/auth/spreadsheets']
     )
-    gc = gspread.authorize(credentials)
 
-    spreadsheet = gc.open('Yuri List')
-    return spreadsheet.worksheet(sheet_name)
+    client = gspread.authorize(credentials)
+    spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/10q6IqRr9kxtpZ4TKixNIEzRZXcqP_2o-mbPnt8e5vCA')
+    return spreadsheet.worksheet('List')
 
 
 def get_all():

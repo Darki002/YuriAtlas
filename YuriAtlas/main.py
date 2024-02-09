@@ -5,8 +5,7 @@ def main():
     rows = Ssa.get_all()
 
     if rows is not None:
-        for row in rows:
-            print(row)
+        print(len(rows))
 
 
 if __name__ == '__main__':
