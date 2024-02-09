@@ -1,4 +1,4 @@
-import SpreadSheetAccess.SpreadSheetAccess as Ssa
+from YuriMangaListAccess import SpreadSheetAccess as Ssa
 
 
 def main():

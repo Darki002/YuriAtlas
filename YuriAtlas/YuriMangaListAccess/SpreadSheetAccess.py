@@ -1,3 +1,4 @@
+from YuriManga import YuriManga
 from google.oauth2 import service_account
 import gspread
 
@@ -10,13 +11,15 @@ def _get_worksheet(sheet_name):
 
     client = gspread.authorize(credentials)
     spreadsheet = client.open_by_url('https://docs.google.com/spreadsheets/d/10q6IqRr9kxtpZ4TKixNIEzRZXcqP_2o-mbPnt8e5vCA')
-    return spreadsheet.worksheet('List')
+    return spreadsheet.worksheet(sheet_name)
 
 
 def get_all():
     try:
         worksheet = _get_worksheet('List')
-        return worksheet.get_all_values()
+
+        rows = worksheet.get_all_records()
+        return [YuriManga.from_row(row) for row in rows]
     except Exception as e:
         print(f"Failed to retrieve data. Error: {e}")
         return None
