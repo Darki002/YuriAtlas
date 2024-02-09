@@ -1,8 +1,8 @@
-from YuriMangaListAccess import SpreadSheetAccess as Ssa
+from YuriMangaListAccess import SpreadSheetAccess
 
 
 def main():
-    rows = Ssa.get_all()
+    rows = SpreadSheetAccess.get_all()
 
     if rows is not None:
         print(len(rows))
