@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Yuri Atlas</h1>
+
+    <h2>Search</h2>
+    <form method="post" action="{{ url_for('search_manga') }}">
+        <lable for="manga_title">Manga Title:</lable>
+        <input type="text" id="manga_title" name="manga_title" required/>
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if manga %}
+        <h2>{{ manga.title }}</h2>
+
+        {% if manga.link != '---' %}
+            <a href="{{ manga.link }}">Reading Link</a>
+        {% endif %}
+        <p><b>Alternative Title:</b> {{ manga.alternative_title }}</p>
+        <p><b>NSFW:</b> {{ manga.nsfw }}</p>
+
+        <p><b>Genres:</b></p>
+        <ul>
+            {% for genre in manga.genres %}
+                <li>{{ genre }}</li>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+</body>
+</html>
