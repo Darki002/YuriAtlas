@@ -12,12 +12,17 @@ def home():
 @app.route('/search_manga', methods=['POST'])
 def search_manga():
     query = request.form['manga_title']
-    results = SpreadSheetAccess.search_by_name(query)
+
+    nsfw_enabled = request.form.get('nsfw_enabled', False)
+    nsfw_enabled = nsfw_enabled == 'on'
+
+    print(nsfw_enabled)
+    results = SpreadSheetAccess.search_by_name(query, nsfw_enabled)
 
     if results is None:
         return render_template('index.html')
 
-    return render_template('index.html', mangas=results, search_query=query)
+    return render_template('index.html', mangas=results, search_query=query, nsfw_enabled=nsfw_enabled)
 
 
 @app.route('/get_manga')

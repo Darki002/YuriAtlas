@@ -21,6 +21,7 @@ def get_all():
         worksheet = _get_worksheet(0)
         rows = worksheet.get_all_values()
         return [YuriManga.from_row(row) for row in rows]
+
     except Exception as e:
         logging.error(f"Failed to retrieve data. Error: {e}")
         return None
@@ -40,7 +41,7 @@ def get_by_name(manga_name):
         return None
 
 
-def search_by_name(manga_name):
+def search_by_name(manga_name, nsfw_enabled):
     try:
         rows = get_all()
         if len(rows) == 0:
@@ -49,7 +50,12 @@ def search_by_name(manga_name):
         mangas = filter(lambda m: m.title.lower().find(manga_name.lower()) != -1, rows)
         typo_mangas = filter(lambda m: distance(manga_name.lower(), m.title.lower()) < 3, rows)
         unique_results = set(mangas) | set(typo_mangas)
-        return list(unique_results)
+
+        if nsfw_enabled:
+            return list(unique_results)
+
+        no_nsfw = filter(lambda m: m.nsfw == 'No' or m.nsfw == 'Suggestive', unique_results)
+        return list(no_nsfw)
 
     except Exception as e:
         logging.error(f"Failed to retrieve data. Error: {e}")

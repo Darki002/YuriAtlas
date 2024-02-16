@@ -9,6 +9,9 @@
 
     <h2>Search</h2>
     <form method="post" action="{{ url_for('search_manga') }}">
+        <label for="nsfw_enabled">NSFW Enabled</label>
+        <input type="checkbox" id="nsfw_enabled" name="nsfw_enabled" {% if nsfw_enabled %}checked{% endif %}>
+        <br/>
         <lable for="manga_title">Manga Title:</lable>
         <input type="text" id="manga_title" name="manga_title" required/>
         <button type="submit">Submit</button>
@@ -39,6 +42,8 @@
         <p><b>Format:</b> {{ manga.manga_format }}</p>
 
         <p><b>Publication:</b> {{ manga.publication }} </p>
+
+        <p><b>NSFW:</b> {{ manga.nsfw }} </p>
 
         <p><b>Genres:</b></p>
         <ul>
