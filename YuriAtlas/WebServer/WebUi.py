@@ -17,7 +17,7 @@ def search_manga():
     if results is None:
         return render_template('index.html')
 
-    return render_template('index.html', mangas=results)
+    return render_template('index.html', mangas=results, search_query=query)
 
 
 @app.route('/get_manga')

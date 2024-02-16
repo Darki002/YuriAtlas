@@ -1,4 +1,4 @@
-def levenshtein_distance(str1, str2):
+def distance(str1, str2):
     if str1 == str2:
         return 0
 
@@ -35,5 +35,5 @@ if __name__ == '__main__':
     s1 = 'book'
     s2 = 'back'
 
-    result = levenshtein_distance(s1, s2)
+    result = distance(s1, s2)
     print(f'The Levenshtein distance between "{s1}" and "{s2}" is {result}')

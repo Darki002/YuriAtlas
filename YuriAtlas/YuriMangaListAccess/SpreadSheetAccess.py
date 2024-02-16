@@ -1,4 +1,5 @@
 from YuriMangaListAccess.YuriManga import YuriManga
+from YuriMangaListAccess.LevensteinsDistance import distance
 from google.oauth2 import service_account
 import gspread
 import logging
@@ -45,8 +46,10 @@ def search_by_name(manga_name):
         if len(rows) == 0:
             return None
 
-        mangas = filter(lambda m: m.title.find(manga_name) != -1, rows)
-        return mangas
+        mangas = filter(lambda m: m.title.lower().find(manga_name.lower()) != -1, rows)
+        typo_mangas = filter(lambda m: distance(manga_name.lower(), m.title.lower()) < 3, rows)
+        unique_results = set(mangas) | set(typo_mangas)
+        return list(unique_results)
 
     except Exception as e:
         logging.error(f"Failed to retrieve data. Error: {e}")
