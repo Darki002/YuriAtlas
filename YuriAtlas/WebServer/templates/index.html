@@ -14,14 +14,31 @@
         <button type="submit">Submit</button>
     </form>
 
+    {% if mangas %}
+
+        <h2>Results</h2>
+
+        <ul>
+            {% for m in mangas %}
+                <li><a href="{{url_for('get_manga', title=m.title)}}">{{m.title}}</a></li>
+            {% endfor %}
+        </ul>
+
+    {% endif %}
+
+
     {% if manga %}
         <h2>{{ manga.title }}</h2>
+
+        <p><b>Alternative Title:</b> {{ manga.alternative_title }}</p>
 
         {% if manga.link != '---' %}
             <a href="{{ manga.link }}">Reading Link</a>
         {% endif %}
-        <p><b>Alternative Title:</b> {{ manga.alternative_title }}</p>
-        <p><b>NSFW:</b> {{ manga.nsfw }}</p>
+
+        <p><b>Format:</b> {{ manga.manga_format }}</p>
+
+        <p><b>Publication:</b> {{ manga.publication }} </p>
 
         <p><b>Genres:</b></p>
         <ul>

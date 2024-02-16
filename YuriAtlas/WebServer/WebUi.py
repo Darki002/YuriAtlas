@@ -12,12 +12,23 @@ def home():
 @app.route('/search_manga', methods=['POST'])
 def search_manga():
     query = request.form['manga_title']
-    results = SpreadSheetAccess.get_by_name(query)
+    results = SpreadSheetAccess.search_by_name(query)
 
     if results is None:
         return render_template('index.html')
 
-    return render_template('index.html', manga=results)
+    return render_template('index.html', mangas=results)
+
+
+@app.route('/get_manga')
+def get_manga():
+    query = request.args.get('title')
+    result = SpreadSheetAccess.get_by_name(query)
+
+    if result is None:
+        return render_template('index.html')
+
+    return render_template('index.html', manga=result)
 
 
 def run():

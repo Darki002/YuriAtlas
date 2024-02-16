@@ -37,3 +37,17 @@ def get_by_name(manga_name):
     except Exception as e:
         logging.error(f"Failed to retrieve data. Error: {e}")
         return None
+
+
+def search_by_name(manga_name):
+    try:
+        rows = get_all()
+        if len(rows) == 0:
+            return None
+
+        mangas = filter(lambda m: m.title.find(manga_name) != -1, rows)
+        return mangas
+
+    except Exception as e:
+        logging.error(f"Failed to retrieve data. Error: {e}")
+        return None
