@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return _render_index()
 
 
 @app.route('/search_manga', methods=['POST'])
@@ -22,7 +22,8 @@ def search_manga():
     if results is None:
         return render_template('index.html')
 
-    return render_template('index.html', mangas=results, search_query=query, nsfw_enabled=nsfw_enabled)
+    genres = SpreadSheetAccess.get_all_genres()
+    return _render_index(mangas=results, search_query=query, nsfw_enabled=nsfw_enabled)
 
 
 @app.route('/get_manga')
@@ -33,7 +34,13 @@ def get_manga():
     if result is None:
         return render_template('index.html')
 
-    return render_template('index.html', manga=result)
+    genres = SpreadSheetAccess.get_all_genres()
+    return _render_index(manga=result)
+
+
+def _render_index(**context):
+    genres = SpreadSheetAccess.get_all_genres()
+    return render_template('index.html', genres=genres, **context)
 
 
 def run():

@@ -5,7 +5,7 @@ import gspread
 import logging
 
 
-def _get_worksheet(worksheet_id):
+def _get_worksheet(worksheet_index):
     credentials = service_account.Credentials.from_service_account_file(
         './YuriMangaListAccess/yuriatlas-ba7416ea8160.json',
         scopes=['https://www.googleapis.com/auth/spreadsheets']
@@ -13,12 +13,18 @@ def _get_worksheet(worksheet_id):
 
     client = gspread.authorize(credentials)
     spreadsheet = client.open_by_key('10q6IqRr9kxtpZ4TKixNIEzRZXcqP_2o-mbPnt8e5vCA')
-    return spreadsheet.get_worksheet_by_id(worksheet_id)
+    return spreadsheet.get_worksheet(worksheet_index)
+
+
+def get_all_genres():
+    worksheet = _get_worksheet(2)
+    genres = worksheet.col_values(19)
+    return genres
 
 
 def get_all():
     try:
-        worksheet = _get_worksheet(0)
+        worksheet = _get_worksheet(1)
         rows = worksheet.get_all_values()
         return [YuriManga.from_row(row) for row in rows]
 
