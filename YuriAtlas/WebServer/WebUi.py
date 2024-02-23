@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from YuriMangaListAccess import SpreadSheetAccess
 
 app = Flask(__name__)
@@ -36,6 +36,11 @@ def get_manga():
 
     genres = SpreadSheetAccess.get_all_genres()
     return _render_index(manga=result)
+
+
+@app.route('/callback_myanimelist')
+def callback_myanimelist():
+    return redirect(url_for('/'))
 
 
 def _render_index(**context):
