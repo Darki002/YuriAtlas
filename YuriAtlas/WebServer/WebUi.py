@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from YuriMangaListAccess import SpreadSheetAccess
+from ReadingList import UserReadingList
 
 app = Flask(__name__)
 
@@ -26,7 +27,7 @@ def search_manga():
     return _render_index(mangas=results, search_query=query, nsfw_enabled=nsfw_enabled)
 
 
-@app.route('/get_manga')
+@app.route('/get_manga', methods=['POST'])
 def get_manga():
     query = request.args.get('title')
     result = SpreadSheetAccess.get_by_name(query)
@@ -36,6 +37,20 @@ def get_manga():
 
     genres = SpreadSheetAccess.get_all_genres()
     return _render_index(manga=result)
+
+
+@app.route('/manga-list')
+def manga_list():
+    return render_template('manga_list.html')
+
+
+@app.route('/load-user-list')
+def load_user_list():
+    username = request.args.get('username')
+    source = request.args.get('source')
+
+    result = UserReadingList.get_user_list_from(username, source)
+    return render_template('manga_list.html')
 
 
 @app.route('/callback_myanimelist')

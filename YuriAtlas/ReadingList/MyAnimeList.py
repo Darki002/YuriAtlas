@@ -1,6 +1,6 @@
 import requests
 
-URL = "https://api.myanimelist.net/v2/users/{user_name}/mangalist"
+URL = "https://api.myanimelist.net/v2/users/{username}/mangalist"
 
 
 def get_list(user_name):
