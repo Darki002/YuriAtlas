@@ -33,9 +33,9 @@ class TextPreprocessor:
 
         print(word, wordnet_tag)
         if wordnet_tag in ('a', 'r') and word.endswith('er'):
-            return word[:-2]  # Strip 'er' for comparatives
+            return word[:-2]
         elif wordnet_tag in ('a', 'r') and word.endswith('est'):
-            return word[:-3]  # Strip 'est' for superlatives
+            return word[:-3]
         else:
             return lemmatizer.lemmatize(word, wordnet_tag)
 
