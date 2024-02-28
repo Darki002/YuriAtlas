@@ -31,7 +31,6 @@ class TextPreprocessor:
         lemmatizer = WordNetLemmatizer()
         wordnet_tag = self._get_wordnet_pos(treebank_tag)
 
-        print(word, wordnet_tag)
         if wordnet_tag in ('a', 'r') and word.endswith('er'):
             return word[:-2]
         elif wordnet_tag in ('a', 'r') and word.endswith('est'):
