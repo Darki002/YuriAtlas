@@ -1,4 +1,4 @@
-from YuriMangaListAccess.YuriManga import YuriManga
+from YuriMangaListAccess.YuriMangaLegacy import YuriMangaLegacy
 from YuriMangaListAccess.LevensteinsDistance import distance
 from google.oauth2 import service_account
 import gspread
@@ -26,7 +26,7 @@ def get_all():
     try:
         worksheet = _get_worksheet(1)
         rows = worksheet.get_all_values()
-        return [YuriManga.from_row(row) for row in rows]
+        return [YuriMangaLegacy.from_row(row) for row in rows]
 
     except Exception as e:
         logging.error(f"Failed to retrieve data. Error: {e}")

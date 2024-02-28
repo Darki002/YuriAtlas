@@ -1,64 +1,40 @@
+from DescriptionProcessing.preprocessing import TextPreprocessor
+
+
 class YuriManga:
-    def __init__(
-            self,
-            title,
-            alternative_title,
-            nsfw,
-            genres,
-            manga_format,
-            publication,
-            link):
-        self._title = title
-        self._alternative_title = alternative_title
-        self._nsfw = nsfw
-        self._genres = genres
-        self._manga_format = manga_format
-        self._publication = publication
-        self._link = link
+    def __init__(self, title, alternative_title, description, nsfw_level, genres, manga_format, publication):
+        self.title = title
+        self.alternative_title = alternative_title
+        self.description = description
+        self.nsfw_level = nsfw_level
+        self.genres = genres
+        self.manga_format = manga_format
+        self.publication = publication
+        # Processed data
+        self._processed_description = None
+        self._processed_nsfw_level = None
 
-    @property
-    def title(self):
-        return self._title
+    def process_nsfw_level(self):
+        match self.nsfw_level:
+            case 'No':
+                self._processed_nsfw_level = 0
+            case 'Suggestive':
+                self._processed_nsfw_level = 1
+            case 'Erotic' | 'NSFW':
+                self._processed_nsfw_level = 2
+            case _:
+                self._processed_nsfw_level = 0
 
-    @property
-    def alternative_title(self):
-        return self._alternative_title
+    def get_processed_nsfw_level(self):
+        if self._processed_nsfw_level is None:
+            self.process_nsfw_level()
+        return self._processed_nsfw_level
 
-    @property
-    def nsfw(self):
-        return self._nsfw
+    def process_description(self):
+        preprocessor = TextPreprocessor(self.description)
+        self._processed_description = preprocessor.process().text
 
-    @property
-    def genres(self):
-        return self._genres
-
-    @property
-    def manga_format(self):
-        return self._manga_format
-
-    @property
-    def publication(self):
-        return self._publication
-
-    @property
-    def link(self):
-        return self._link
-
-    @classmethod
-    def from_row(cls, row):
-
-        if len(row) == 0:
-            return None
-
-        genres = str(row[5]).split(',')
-        genres = [g.strip() for g in genres]
-
-        return cls(
-            title=row[0],
-            alternative_title=row[4],
-            nsfw=row[3],
-            genres=genres,
-            manga_format=row[6],
-            publication=row[7],
-            link=row[8]
-        )
+    def get_processed_description(self):
+        if self._processed_description is None:
+            self.process_description()
+        return self._processed_description
