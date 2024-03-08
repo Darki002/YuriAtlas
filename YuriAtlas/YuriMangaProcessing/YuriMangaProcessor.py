@@ -1,15 +1,18 @@
-from DescriptionProcessing.preprocessing import TextPreprocessor
+from YuriMangaProcessing.DescriptionProcessing.preprocessing import TextPreprocessor
 
 
 class YuriManga:
-    def __init__(self, title, alternative_title, description, nsfw_level, genres, manga_format, publication):
+    def __init__(self, title, alternative_titles, description, nsfw_level, genres, manga_format, publication,
+                 user_reading_status, user_score):
         self.title = title
-        self.alternative_title = alternative_title
+        self.alternative_titles = alternative_titles
         self.description = description
         self.nsfw_level = nsfw_level
         self.genres = genres
         self.manga_format = manga_format
         self.publication = publication
+        self.user_reading_status = user_reading_status
+        self.user_score = user_score
         # Processed data
         self._processed_description = None
         self._processed_nsfw_level = None
@@ -38,3 +41,12 @@ class YuriManga:
         if self._processed_description is None:
             self.process_description()
         return self._processed_description
+
+    def get_alternative_title_en(self):
+        return self.alternative_titles['en']
+
+    def get_alternative_title_jp(self):
+        return self.alternative_titles['ja']
+
+    def get_alternative_title_synonyms(self):
+        return self.alternative_titles['synonyms']

@@ -1,5 +1,5 @@
-import requests
 from YuriMangaProcessing.YuriMangaProcessor import YuriManga
+import requests
 
 URL = "https://api.myanimelist.net/v2/users/{username}/mangalist"
 
@@ -12,9 +12,9 @@ def get_list(user_name):
 
     params = {
         'sort': 'manga_title',
-        'fields': 'list_status, nsfw, synopsis, genres, media_type, alternative_titles',
+        'fields': 'list_status, status, nsfw, synopsis, genres, media_type, alternative_titles',
         'limit': 100,
-        'nsfw': 'true'
+        'nsfw': True
     }
 
     response = requests.get(URL.format(username=user_name), headers=headers, params=params)
@@ -26,18 +26,44 @@ def get_list(user_name):
 
 
 def _map_response(response):
+    mangas = response["data"]
 
-    manga = YuriManga(
-        title="",
-        alternative_title="",
-        description="",
-        nsfw_level="",
-        genres="",
-        manga_format="",
-        publication=""
+    mapped_mangas = []
+
+    for manga in mangas:
+        m = _map_manga(manga)
+        mapped_mangas.append(m)
+
+    return mapped_mangas
+
+
+def _map_manga(manga_dict):
+
+    node = manga_dict["node"]
+    list_status = manga_dict["list_status"]
+
+    genres = _get_genre_names(node["genres"])
+
+    return YuriManga(
+        title=node["title"],
+        alternative_titles=node["alternative_titles"],
+        description=node["synopsis"],
+        nsfw_level=node["nsfw"],
+        genres=genres,
+        manga_format=node["media_type"],
+        publication=node["status"],
+        user_reading_status=list_status["status"],
+        user_score=list_status["score"]
     )
 
-    return response
+
+def _get_genre_names(genre_list):
+    genre_names = []
+
+    for genre in genre_list:
+        genre_names.append(genre["name"])
+
+    return genre_names
 
 
 if __name__ == '__main__':
