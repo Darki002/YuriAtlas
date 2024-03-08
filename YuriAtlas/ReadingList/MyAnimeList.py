@@ -6,11 +6,14 @@ URL = "https://api.myanimelist.net/v2/users/{username}/mangalist"
 def get_list(user_name):
 
     headers = {
-        'X-MAL-CLIENT-ID': 'Your-API-Key',
+        'X-MAL-CLIENT-ID': 'Client ID',
     }
 
     params = {
-        'fields': 'manga_title, list_score, manga_id'
+        'sort': 'manga_title',
+        'fields': 'list_status, nsfw, synopsis, genres, media_type',
+        'limit': 100,
+        'nsfw': 'true'
     }
 
     response = requests.get(URL.format(username=user_name), headers=headers, params=params)
@@ -22,8 +25,12 @@ def get_list(user_name):
 
 
 def _map_response(response):
+
+
+
     return response
 
 
 if __name__ == '__main__':
     result = get_list('Darki002')
+    print(result)

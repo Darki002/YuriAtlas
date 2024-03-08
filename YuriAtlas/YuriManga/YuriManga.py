@@ -16,11 +16,11 @@ class YuriManga:
 
     def process_nsfw_level(self):
         match self.nsfw_level:
-            case 'No':
+            case 'no' | 'white':
                 self._processed_nsfw_level = 0
-            case 'Suggestive':
+            case 'Suggestive' | 'gray':
                 self._processed_nsfw_level = 1
-            case 'Erotic' | 'NSFW':
+            case 'Erotic' | 'NSFW' | 'black':
                 self._processed_nsfw_level = 2
             case _:
                 self._processed_nsfw_level = 0
