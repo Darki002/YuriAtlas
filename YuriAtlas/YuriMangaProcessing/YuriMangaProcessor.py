@@ -19,14 +19,7 @@ class YuriManga:
         self._processed_nsfw_level = None
         self._processed_manga_format = None
 
-    def process_nsfw_level(self):
-        self._processed_nsfw_level = mappings.from_nsfw_level_to_numeric(self.nsfw_level)
-
-    def get_processed_nsfw_level(self):
-        if self._processed_nsfw_level is None:
-            self.process_nsfw_level()
-        return self._processed_nsfw_level
-
+    # Description
     def process_description(self):
         preprocessor = TextPreprocessor(self.description)
         self._processed_description = preprocessor.process().text
@@ -36,6 +29,16 @@ class YuriManga:
             self.process_description()
         return self._processed_description
 
+    # NSFW Level
+    def process_nsfw_level(self):
+        self._processed_nsfw_level = mappings.from_nsfw_level_to_numeric(self.nsfw_level)
+
+    def get_processed_nsfw_level(self):
+        if self._processed_nsfw_level is None:
+            self.process_nsfw_level()
+        return self._processed_nsfw_level
+
+    # Manga Format
     def process_manga_format(self):
         self._processed_manga_format = mappings.from_manga_format_to_numeric(self.manga_format)
 
@@ -44,6 +47,7 @@ class YuriManga:
             self.process_manga_format()
         return self._processed_manga_format
 
+    # Alternative Title
     def get_alternative_title_en(self):
         return self.alternative_titles['en']
 
