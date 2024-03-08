@@ -1,4 +1,5 @@
 from YuriMangaProcessing.DescriptionProcessing.preprocessing import TextPreprocessor
+import mappings
 
 
 class YuriManga:
@@ -16,17 +17,10 @@ class YuriManga:
         # Processed data
         self._processed_description = None
         self._processed_nsfw_level = None
+        self._processed_manga_format = None
 
     def process_nsfw_level(self):
-        match self.nsfw_level:
-            case 'no' | 'white':
-                self._processed_nsfw_level = 0
-            case 'Suggestive' | 'gray':
-                self._processed_nsfw_level = 1
-            case 'Erotic' | 'NSFW' | 'black':
-                self._processed_nsfw_level = 2
-            case _:
-                self._processed_nsfw_level = 0
+        self._processed_nsfw_level = mappings.from_nsfw_level_to_numeric(self.nsfw_level)
 
     def get_processed_nsfw_level(self):
         if self._processed_nsfw_level is None:
@@ -41,6 +35,14 @@ class YuriManga:
         if self._processed_description is None:
             self.process_description()
         return self._processed_description
+
+    def process_manga_format(self):
+        self._processed_manga_format = mappings.from_manga_format_to_numeric(self.manga_format)
+
+    def get_processed_manga_format(self):
+        if self._processed_manga_format is None:
+            self.process_manga_format()
+        return self._processed_manga_format
 
     def get_alternative_title_en(self):
         return self.alternative_titles['en']
