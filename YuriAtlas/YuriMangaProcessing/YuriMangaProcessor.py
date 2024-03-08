@@ -1,23 +1,27 @@
+from typing import List
+
 from YuriMangaProcessing.DescriptionProcessing.preprocessing import TextPreprocessor
 import mappings
 
 
 class YuriManga:
-    def __init__(self, title, alternative_titles, description, nsfw_level, genres, manga_format, publication,
-                 user_reading_status, user_score):
-        self.title = title
+    def __init__(self, title: str, alternative_titles, description: str, nsfw_level: str, genres: List[str],
+                 manga_format: str, publication: str, user_reading_status: str, user_score: int):
+        self.title: str = title
         self.alternative_titles = alternative_titles
-        self.description = description
-        self.nsfw_level = nsfw_level
-        self.genres = genres
-        self.manga_format = manga_format
-        self.publication = publication
-        self.user_reading_status = user_reading_status
-        self.user_score = user_score
+        self.description: str = description
+        self.nsfw_level: str = nsfw_level
+        self.genres: List[str] = genres
+        self.manga_format: str = manga_format
+        self.publication: str = publication
+        self.user_reading_status: str = user_reading_status
+        self.user_score: int = user_score
         # Processed data
         self._processed_description = None
-        self._processed_nsfw_level = None
-        self._processed_manga_format = None
+        self._processed_nsfw_level: int | None = None
+        self._processed_genres: List[int] | None = None
+        self._processed_publication: int | None = None
+        self._processed_manga_format: int | None = None
 
     # Description
     def process_description(self):
@@ -33,19 +37,37 @@ class YuriManga:
     def process_nsfw_level(self):
         self._processed_nsfw_level = mappings.from_nsfw_level_to_numeric(self.nsfw_level)
 
-    def get_processed_nsfw_level(self):
+    def get_processed_nsfw_level(self) -> int:
         if self._processed_nsfw_level is None:
             self.process_nsfw_level()
         return self._processed_nsfw_level
+
+    # Genres
+    def process_genres(self):
+        self._processed_genres = self.genres  # TODO Processing
+
+    def get_processed_genres(self) -> List[int]:
+        if self._processed_genres is None:
+            self.process_genres()
+        return self._processed_genres
 
     # Manga Format
     def process_manga_format(self):
         self._processed_manga_format = mappings.from_manga_format_to_numeric(self.manga_format)
 
-    def get_processed_manga_format(self):
+    def get_processed_manga_format(self) -> int:
         if self._processed_manga_format is None:
             self.process_manga_format()
         return self._processed_manga_format
+
+    # Publication
+    def process_publication(self):
+        self._processed_publication = mappings.from_publication_to_numeric(self.publication)
+
+    def get_processed_publication(self) -> int:
+        if self._processed_publication is None:
+            self.process_publication()
+        return self._processed_publication
 
     # Alternative Title
     def get_alternative_title_en(self):
