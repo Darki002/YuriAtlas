@@ -1,5 +1,4 @@
 from typing import List
-
 from YuriMangaProcessing.DescriptionProcessing.preprocessing import TextPreprocessor
 import mappings
 
