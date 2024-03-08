@@ -22,13 +22,14 @@ class YuriManga:
         self._processed_genres: List[int] | None = None
         self._processed_publication: int | None = None
         self._processed_manga_format: int | None = None
+        self._processed_user_reading_status: int | None = None
 
     # Description
     def process_description(self):
         preprocessor = TextPreprocessor(self.description)
         self._processed_description = preprocessor.process().text
 
-    def get_processed_description(self):
+    def get_description(self):
         if self._processed_description is None:
             self.process_description()
         return self._processed_description
@@ -37,7 +38,7 @@ class YuriManga:
     def process_nsfw_level(self):
         self._processed_nsfw_level = mappings.from_nsfw_level_to_numeric(self.nsfw_level)
 
-    def get_processed_nsfw_level(self) -> int:
+    def get_nsfw_level(self) -> int:
         if self._processed_nsfw_level is None:
             self.process_nsfw_level()
         return self._processed_nsfw_level
@@ -46,7 +47,7 @@ class YuriManga:
     def process_genres(self):
         self._processed_genres = self.genres  # TODO Processing
 
-    def get_processed_genres(self) -> List[int]:
+    def get_genres(self) -> List[int]:
         if self._processed_genres is None:
             self.process_genres()
         return self._processed_genres
@@ -55,7 +56,7 @@ class YuriManga:
     def process_manga_format(self):
         self._processed_manga_format = mappings.from_manga_format_to_numeric(self.manga_format)
 
-    def get_processed_manga_format(self) -> int:
+    def get_manga_format(self) -> int:
         if self._processed_manga_format is None:
             self.process_manga_format()
         return self._processed_manga_format
@@ -64,10 +65,23 @@ class YuriManga:
     def process_publication(self):
         self._processed_publication = mappings.from_publication_to_numeric(self.publication)
 
-    def get_processed_publication(self) -> int:
+    def get_publication(self) -> int:
         if self._processed_publication is None:
             self.process_publication()
         return self._processed_publication
+
+    # User Reading Status
+    def process_user_reading_status(self):
+        self._processed_user_reading_status = mappings.from_user_reading_status_to_numeric(self.user_reading_status)
+
+    def get_user_reading_status(self) -> int:
+        if self._processed_user_reading_status is None:
+            self.process_user_reading_status()
+        return self._processed_user_reading_status
+
+    # User Score
+    def get_user_score(self) -> int:
+        return self.user_score
 
     # Alternative Title
     def get_alternative_title_en(self):

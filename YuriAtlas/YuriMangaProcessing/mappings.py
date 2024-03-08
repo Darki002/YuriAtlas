@@ -42,3 +42,17 @@ def from_publication_to_numeric(publication: str) -> int:
             return 2
         case 'canceled':
             return 3
+
+
+def from_user_reading_status_to_numeric(user_reading_status: str) -> int:
+    match user_reading_status:
+        case 'reading':
+            return 0
+        case 'completed':
+            return 1
+        case 'on_hold':
+            return 2
+        case 'dropped':
+            return 3
+        case 'plan_to_read':
+            return 4
