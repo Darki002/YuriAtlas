@@ -47,7 +47,7 @@ class YuriManga:
     def get_alternative_title_en(self):
         return self.alternative_titles['en']
 
-    def get_alternative_title_jp(self):
+    def get_alternative_title_ja(self):
         return self.alternative_titles['ja']
 
     def get_alternative_title_synonyms(self):
