@@ -1,4 +1,4 @@
-from YuriManga.YuriMangaLegacy import YuriMangaLegacy
+from YuriMangaProcessing.YuriMangaLegacy import YuriMangaLegacy
 from YuriMangaListAccess.LevensteinsDistance import distance
 from google.oauth2 import service_account
 import gspread

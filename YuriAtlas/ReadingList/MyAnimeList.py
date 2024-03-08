@@ -1,4 +1,5 @@
 import requests
+from YuriMangaProcessing.YuriMangaProcessor import YuriManga
 
 URL = "https://api.myanimelist.net/v2/users/{username}/mangalist"
 
@@ -11,7 +12,7 @@ def get_list(user_name):
 
     params = {
         'sort': 'manga_title',
-        'fields': 'list_status, nsfw, synopsis, genres, media_type',
+        'fields': 'list_status, nsfw, synopsis, genres, media_type, alternative_titles',
         'limit': 100,
         'nsfw': 'true'
     }
@@ -26,7 +27,15 @@ def get_list(user_name):
 
 def _map_response(response):
 
-
+    manga = YuriManga(
+        title="",
+        alternative_title="",
+        description="",
+        nsfw_level="",
+        genres="",
+        manga_format="",
+        publication=""
+    )
 
     return response
 
