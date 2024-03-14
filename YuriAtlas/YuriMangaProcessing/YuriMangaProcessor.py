@@ -1,8 +1,12 @@
 from YuriMangaProcessing.Preprocessing.text_preprocessing import TextPreprocessor
 from YuriMangaProcessing.Preprocessing import mappings
+from Preprocessing.Genres.genre_processing import GenreProcessing
 
 
 class YuriManga:
+
+    genre_preprocessor: GenreProcessing | None = None
+
     def __init__(self, title: str, alternative_titles: dict[str] | None, description: str, nsfw_level: str,
                  genres: list[str], manga_format: str, publication: str, user_reading_status: str, user_score: int):
         self.title: str = title
@@ -21,6 +25,10 @@ class YuriManga:
         self._processed_publication: int | None = None
         self._processed_manga_format: int | None = None
         self._processed_user_reading_status: int | None = None
+
+    def set_genre_preprocessor(self, genre_preprocessor: GenreProcessing):
+        self.genre_preprocessor = genre_preprocessor
+        return self
 
     # Description
     def process_description(self):
@@ -43,7 +51,9 @@ class YuriManga:
 
     # Genres
     def process_genres(self):
-        self._processed_genres = self.genres  # TODO Processing
+        if self.genre_preprocessor is None:
+            raise ValueError("No genre preprocessor defined")
+        self._processed_genres = [self.genre_preprocessor.process_genre(genre) for genre in self.genres]
 
     def get_genres(self) -> list[int]:
         if self._processed_genres is None:
