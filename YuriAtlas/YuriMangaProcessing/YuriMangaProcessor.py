@@ -1,24 +1,23 @@
-from typing import List
 from YuriMangaProcessing.DescriptionProcessing.preprocessing import TextPreprocessor
 import mappings
 
 
 class YuriManga:
-    def __init__(self, title: str, alternative_titles, description: str, nsfw_level: str, genres: List[str],
-                 manga_format: str, publication: str, user_reading_status: str, user_score: int):
+    def __init__(self, title: str, alternative_titles: dict[str] | None, description: str, nsfw_level: str,
+                 genres: list[str], manga_format: str, publication: str, user_reading_status: str, user_score: int):
         self.title: str = title
-        self.alternative_titles = alternative_titles
+        self.alternative_titles: dict[str] | None = alternative_titles
         self.description: str = description
         self.nsfw_level: str = nsfw_level
-        self.genres: List[str] = genres
+        self.genres: list[str] = genres
         self.manga_format: str = manga_format
         self.publication: str = publication
         self.user_reading_status: str = user_reading_status
         self.user_score: int = user_score
         # Processed data
-        self._processed_description = None
+        self._processed_description: list[str] | None = None
         self._processed_nsfw_level: int | None = None
-        self._processed_genres: List[int] | None = None
+        self._processed_genres: list[int] | None = None
         self._processed_publication: int | None = None
         self._processed_manga_format: int | None = None
         self._processed_user_reading_status: int | None = None
@@ -46,7 +45,7 @@ class YuriManga:
     def process_genres(self):
         self._processed_genres = self.genres  # TODO Processing
 
-    def get_genres(self) -> List[int]:
+    def get_genres(self) -> list[int]:
         if self._processed_genres is None:
             self.process_genres()
         return self._processed_genres
