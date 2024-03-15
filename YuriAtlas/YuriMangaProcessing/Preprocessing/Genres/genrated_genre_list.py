@@ -6,7 +6,7 @@ MAX_GENRES = 20
 MIN_USAGES = 20
 
 
-def get_genre_list():
+def generate_file():
     unfiltered_genres = get_unfiltered_genres()
 
     genres_count = Counter(unfiltered_genres)
@@ -25,4 +25,4 @@ def get_genre_list():
 
 
 if __name__ == "__main__":
-    get_genre_list()
+    generate_file()

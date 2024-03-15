@@ -1,7 +1,19 @@
+import genrated_genre_list
 import json
+import os
 
 
-def get() -> dict[str, int]:
+def get() -> dict[str, int] | None:
+    if not os.path.exists('genre_list.json'):
+        print('genre-list.json not set up')
+        try:
+            genrated_genre_list.generate_file()
+        except Exception as e:
+            print(f"Couldn't generate file! {e}")
+            return None
+
+        print("genre-list.json generated")
+
     with open('genre-list.json', "r") as outfile:
         data = json.load(outfile)
         return data["genres"]
