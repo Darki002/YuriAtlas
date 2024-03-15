@@ -20,4 +20,5 @@ def get() -> dict[str, int] | None:
 
     with open('genre-list.json', "r") as outfile:
         data = json.load(outfile)
-        return data["genres"]
+        genre_list = [(genre["Name"], genre["Index"]) for genre in data]
+        return dict(genre_list)
