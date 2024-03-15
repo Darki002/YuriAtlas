@@ -8,8 +8,11 @@ class GenreProcessing:
     def __init__(self):
         self.genres = get_genre_list()
 
-    def process_genre(self, genre: str) -> int:
+    def process_genre(self, genre: str) -> int | None:
         lower_genre = genre.lower()
+
+        if lower_genre == "girls love":
+            return None
 
         if lower_genre not in self.genres:
             self._try_add_and_get_number(lower_genre)

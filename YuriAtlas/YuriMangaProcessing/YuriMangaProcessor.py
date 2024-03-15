@@ -55,6 +55,7 @@ class YuriManga:
         if self.genre_preprocessor is None:
             raise ValueError("No genre preprocessor defined")
         self._processed_genres = [self.genre_preprocessor.process_genre(genre) for genre in self.genres]
+        self._processed_genres = [genre for genre in self._processed_genres if genre is not None]
         return self
 
     def get_genres(self) -> list[int]:
@@ -116,8 +117,8 @@ class YuriManga:
          .process_user_reading_status())
         return self
 
-    def __str__(self):
-        base_str = (f'Title: {self.title} \n'
+    def __str__(self) -> str:
+        result = (f'Title: {self.title} \n'
                     f'Alternative Titles: {self.alternative_titles} \n'
                     f'Description: {self.description} \n'
                     f'NSFW Level: {self.nsfw_level} \n'
@@ -126,22 +127,24 @@ class YuriManga:
                     f'User Reading Status: {self.user_reading_status} \n'
                     f'User Score: {self.user_score} \n')
 
-        base_str = f'{base_str} {self.genres} \n'
+        result = f'{result} Genres: {self.genres} \n'
 
         if self._processed_description is not None:
-            base_str += self._processed_description
+            result += f'Processed Description: {self._processed_description} \n'
 
         if self._processed_nsfw_level is not None:
-            base_str += self._processed_nsfw_level
+            result += f'Processed NSFW Level: {self._processed_nsfw_level} \n'
 
         if self._processed_manga_format is not None:
-            base_str += self._processed_manga_format
+            result += f'Processed Manga Format: {self._processed_manga_format} \n'
 
         if self._processed_publication is not None:
-            base_str += self._processed_publication
+            result += f'Processed Publication: {self._processed_publication} \n'
 
         if self._processed_user_reading_status is not None:
-            base_str += self._processed_user_reading_status
+            result += f'Processed User Reading Status: {self._processed_user_reading_status} \n'
 
         if self._processed_genres is not None:
-            base_str += self._processed_genres
+            result += f'Processed Genres: {self._processed_genres} \n'
+
+        return result

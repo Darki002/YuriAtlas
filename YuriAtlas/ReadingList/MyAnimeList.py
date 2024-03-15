@@ -1,10 +1,16 @@
-import logging
+import os
 
 from YuriMangaProcessing.YuriMangaProcessor import YuriManga
+from dotenv import load_dotenv
+import logging
 import requests
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+base_path: str = os.path.dirname(__file__)
+env_path: str = os.path.join(base_path, ".env")
+load_dotenv(env_path)
 
 URL = "https://api.myanimelist.net/v2/users/{username}/mangalist"
 
@@ -12,7 +18,7 @@ URL = "https://api.myanimelist.net/v2/users/{username}/mangalist"
 def get_list(user_name: str) -> list[YuriManga] | None:
 
     headers = {
-        'X-MAL-CLIENT-ID': 'Client ID',
+        'X-MAL-CLIENT-ID': os.getenv("MAL_CLIENT_ID"),
     }
 
     params = {
