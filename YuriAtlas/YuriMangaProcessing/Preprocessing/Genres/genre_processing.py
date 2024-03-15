@@ -6,7 +6,7 @@ class GenreProcessing:
     genres: dict[str, int]
 
     def __init__(self):
-        self.genres = genre_list.get()
+        self.genres = genre_list.get_manual_list()
 
     def process_genre(self, genre: str) -> int:
         lower_genre = genre.lower()

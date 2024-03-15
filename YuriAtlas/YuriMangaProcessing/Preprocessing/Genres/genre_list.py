@@ -1,3 +1,12 @@
+import json
+
+
+def get() -> dict[str, int]:
+    with open('genre-list.json', "r") as outfile:
+        data = json.load(outfile)
+        return data["genres"]
+
+
 GENRES = {
     'romance': 0,
     'drama': 1,
@@ -14,5 +23,5 @@ GENRES = {
 }
 
 
-def get() -> dict[str, int]:
+def get_manual_list() -> dict[str, int]:
     return GENRES.copy()
