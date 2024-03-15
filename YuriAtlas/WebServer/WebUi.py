@@ -17,7 +17,6 @@ def search_manga():
     nsfw_enabled = request.form.get('nsfw_enabled', False)
     nsfw_enabled = nsfw_enabled == 'on'
 
-    print(nsfw_enabled)
     results = SpreadSheetAccess.search_by_name(query, nsfw_enabled)
 
     if results is None:
