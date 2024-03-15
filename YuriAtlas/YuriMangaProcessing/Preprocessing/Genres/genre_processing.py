@@ -1,4 +1,4 @@
-import genre_list
+from genre_list import get_genre_list
 
 
 class GenreProcessing:
@@ -6,7 +6,7 @@ class GenreProcessing:
     genres: dict[str, int]
 
     def __init__(self):
-        self.genres = genre_list.get()
+        self.genres = get_genre_list()
 
     def process_genre(self, genre: str) -> int:
         lower_genre = genre.lower()

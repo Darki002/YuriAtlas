@@ -4,7 +4,6 @@ from Preprocessing.Genres.genre_processing import GenreProcessing
 
 
 class YuriManga:
-
     genre_preprocessor: GenreProcessing | None = None
 
     def __init__(self, title: str, alternative_titles: dict[str] | None, description: str, nsfw_level: str,
@@ -34,6 +33,7 @@ class YuriManga:
     def process_description(self):
         preprocessor = TextPreprocessor(self.description)
         self._processed_description = preprocessor.process().text
+        return self
 
     def get_description(self):
         if self._processed_description is None:
@@ -43,6 +43,7 @@ class YuriManga:
     # NSFW Level
     def process_nsfw_level(self):
         self._processed_nsfw_level = mappings.from_nsfw_level_to_numeric(self.nsfw_level)
+        return self
 
     def get_nsfw_level(self) -> int:
         if self._processed_nsfw_level is None:
@@ -54,6 +55,7 @@ class YuriManga:
         if self.genre_preprocessor is None:
             raise ValueError("No genre preprocessor defined")
         self._processed_genres = [self.genre_preprocessor.process_genre(genre) for genre in self.genres]
+        return self
 
     def get_genres(self) -> list[int]:
         if self._processed_genres is None:
@@ -63,6 +65,7 @@ class YuriManga:
     # Manga Format
     def process_manga_format(self):
         self._processed_manga_format = mappings.from_manga_format_to_numeric(self.manga_format)
+        return self
 
     def get_manga_format(self) -> int:
         if self._processed_manga_format is None:
@@ -72,6 +75,7 @@ class YuriManga:
     # Publication
     def process_publication(self):
         self._processed_publication = mappings.from_publication_to_numeric(self.publication)
+        return self
 
     def get_publication(self) -> int:
         if self._processed_publication is None:
@@ -81,6 +85,7 @@ class YuriManga:
     # User Reading Status
     def process_user_reading_status(self):
         self._processed_user_reading_status = mappings.from_user_reading_status_to_numeric(self.user_reading_status)
+        return self
 
     def get_user_reading_status(self) -> int:
         if self._processed_user_reading_status is None:
@@ -100,3 +105,43 @@ class YuriManga:
 
     def get_alternative_title_synonyms(self):
         return self.alternative_titles['synonyms']
+
+    def process(self, genre_preprocessor: GenreProcessing):
+        self.genre_preprocessor = genre_preprocessor
+        (self.process_description()
+         .process_nsfw_level()
+         .process_genres()
+         .process_manga_format()
+         .process_publication()
+         .process_user_reading_status())
+        return self
+
+    def __str__(self):
+        base_str = (f'Title: {self.title} \n'
+                    f'Alternative Titles: {self.alternative_titles} \n'
+                    f'Description: {self.description} \n'
+                    f'NSFW Level: {self.nsfw_level} \n'
+                    f'Manga Format: {self.manga_format} \n'
+                    f'Publication: {self.publication} \n'
+                    f'User Reading Status: {self.user_reading_status} \n'
+                    f'User Score: {self.user_score} \n')
+
+        base_str = f'{base_str} {self.genres} \n'
+
+        if self._processed_description is not None:
+            base_str += self._processed_description
+
+        if self._processed_nsfw_level is not None:
+            base_str += self._processed_nsfw_level
+
+        if self._processed_manga_format is not None:
+            base_str += self._processed_manga_format
+
+        if self._processed_publication is not None:
+            base_str += self._processed_publication
+
+        if self._processed_user_reading_status is not None:
+            base_str += self._processed_user_reading_status
+
+        if self._processed_genres is not None:
+            base_str += self._processed_genres
