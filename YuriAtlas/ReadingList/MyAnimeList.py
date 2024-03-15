@@ -1,5 +1,10 @@
+import logging
+
 from YuriMangaProcessing.YuriMangaProcessor import YuriManga
 import requests
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 URL = "https://api.myanimelist.net/v2/users/{username}/mangalist"
 
@@ -22,6 +27,7 @@ def get_list(user_name: str) -> list[YuriManga] | None:
     if response.status_code == 200:
         return _map_response(response.json())
     else:
+        logger.error(f"Error while fetching response from MyAnimeList: {response}")
         return None
 
 
