@@ -1,0 +1,78 @@
+[
+    {
+        "Name": "Romance",
+        "Index": 0
+    },
+    {
+        "Name": "School Life",
+        "Index": 1
+    },
+    {
+        "Name": "Drama",
+        "Index": 2
+    },
+    {
+        "Name": "Slice of Life",
+        "Index": 3
+    },
+    {
+        "Name": "Comedy",
+        "Index": 4
+    },
+    {
+        "Name": "Fantasy",
+        "Index": 5
+    },
+    {
+        "Name": "Supernatural",
+        "Index": 6
+    },
+    {
+        "Name": "Office Workers",
+        "Index": 7
+    },
+    {
+        "Name": "Action",
+        "Index": 8
+    },
+    {
+        "Name": "Psychological",
+        "Index": 9
+    },
+    {
+        "Name": "Magic",
+        "Index": 10
+    },
+    {
+        "Name": "Isekai",
+        "Index": 11
+    },
+    {
+        "Name": "Monster Girls",
+        "Index": 12
+    },
+    {
+        "Name": "Mystery",
+        "Index": 13
+    },
+    {
+        "Name": "Adventure",
+        "Index": 14
+    },
+    {
+        "Name": "Vampires",
+        "Index": 15
+    },
+    {
+        "Name": "Incest",
+        "Index": 16
+    },
+    {
+        "Name": "Harem",
+        "Index": 17
+    },
+    {
+        "Name": "Tragedy",
+        "Index": 18
+    }
+]

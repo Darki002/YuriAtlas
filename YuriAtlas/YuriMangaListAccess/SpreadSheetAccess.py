@@ -1,13 +1,21 @@
+import os.path
+
 from YuriMangaProcessing.YuriMangaLegacy import YuriMangaLegacy
 from YuriMangaListAccess.LevensteinsDistance import distance
 from google.oauth2 import service_account
 import gspread
 import logging
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+base_path: str = os.path.dirname(__file__)
+FILE_PATH: str = os.path.join(base_path, "yuriatlas-ba7416ea8160.json")
+
 
 def _get_worksheet(worksheet_index: int):
     credentials = service_account.Credentials.from_service_account_file(
-        './YuriMangaListAccess/yuriatlas-ba7416ea8160.json',
+        FILE_PATH,
         scopes=['https://www.googleapis.com/auth/spreadsheets']
     )
 
@@ -22,7 +30,7 @@ def get_all_genres() -> list[str] | None:
         genres = worksheet.col_values(19)  # 19 = Col "S"
         return genres
     except Exception as e:
-        logging.error(e)
+        logger.error(e)
         return None
 
 
@@ -32,7 +40,7 @@ def get_unfiltered_genres() -> list[str] | None:
         genres = worksheet.col_values(18)  # 18 = Col "R"
         return genres
     except Exception as e:
-        logging.error(e)
+        logger.error(e)
         return None
 
 
@@ -43,7 +51,7 @@ def get_all():
         return [YuriMangaLegacy.from_row(row) for row in rows]
 
     except Exception as e:
-        logging.error(f"Failed to retrieve data. Error: {e}")
+        logger.error(f"Failed to retrieve data. Error: {e}")
         return None
 
 
@@ -57,7 +65,7 @@ def get_by_name(manga_name: str):
         return next(mangas, None)
 
     except Exception as e:
-        logging.error(f"Failed to retrieve data. Error: {e}")
+        logger.error(f"Failed to retrieve data. Error: {e}")
         return None
 
 
@@ -78,5 +86,5 @@ def search_by_name(manga_name: str, nsfw_enabled: bool):
         return list(no_nsfw)
 
     except Exception as e:
-        logging.error(f"Failed to retrieve data. Error: {e}")
+        logger.error(f"Failed to retrieve data. Error: {e}")
         return None
