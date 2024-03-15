@@ -64,8 +64,3 @@ def _get_genre_names(genre_list):
         genre_names.append(genre["name"])
 
     return genre_names
-
-
-if __name__ == '__main__':
-    result = get_list('Darki002')
-    print(result)

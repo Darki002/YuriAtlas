@@ -28,12 +28,3 @@ def distance(str1, str2):
             matrix[i][j] = min_cost
 
     return matrix[row_count - 1][col_count - 1]
-
-
-if __name__ == '__main__':
-
-    s1 = 'book'
-    s2 = 'back'
-
-    result = distance(s1, s2)
-    print(f'The Levenshtein distance between "{s1}" and "{s2}" is {result}')
