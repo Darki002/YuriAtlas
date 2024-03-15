@@ -13,7 +13,6 @@ def get_from_me():
 
     [m.process(genre_processing) for m in user_list]
 
-    print(len(user_list))
     print(user_list[10])
 
 

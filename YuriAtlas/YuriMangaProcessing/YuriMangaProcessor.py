@@ -98,13 +98,13 @@ class YuriManga:
         return self.user_score
 
     # Alternative Title
-    def get_alternative_title_en(self):
+    def get_alternative_title_en(self) -> str:
         return self.alternative_titles['en']
 
-    def get_alternative_title_ja(self):
+    def get_alternative_title_ja(self) -> str:
         return self.alternative_titles['ja']
 
-    def get_alternative_title_synonyms(self):
+    def get_alternative_title_synonyms(self) -> list[str]:
         return self.alternative_titles['synonyms']
 
     def process(self, genre_preprocessor: GenreProcessing):
@@ -119,13 +119,13 @@ class YuriManga:
 
     def __str__(self) -> str:
         result = (f'Title: {self.title} \n'
-                    f'Alternative Titles: {self.alternative_titles} \n'
-                    f'Description: {self.description} \n'
-                    f'NSFW Level: {self.nsfw_level} \n'
-                    f'Manga Format: {self.manga_format} \n'
-                    f'Publication: {self.publication} \n'
-                    f'User Reading Status: {self.user_reading_status} \n'
-                    f'User Score: {self.user_score} \n')
+                  f'Alternative Titles: {self.alternative_titles} \n'
+                  f'Description: {self.description} \n'
+                  f'NSFW Level: {self.nsfw_level} \n'
+                  f'Manga Format: {self.manga_format} \n'
+                  f'Publication: {self.publication} \n'
+                  f'User Reading Status: {self.user_reading_status} \n'
+                  f'User Score: {self.user_score} \n')
 
         result = f'{result} Genres: {self.genres} \n'
 
