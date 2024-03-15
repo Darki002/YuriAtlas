@@ -22,6 +22,12 @@ def get_all_genres():
     return genres
 
 
+def get_unfiltered_genres():
+    worksheet = _get_worksheet(2)
+    genres = worksheet.col_values(18)
+    return genres
+
+
 def get_all():
     try:
         worksheet = _get_worksheet(1)
