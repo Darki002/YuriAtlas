@@ -1,11 +1,11 @@
-from genrated_genre_list import generate_file
+from .genrated_genre_list import generate_file
 import logging
 import json
 import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
+ 
 
 def get_genre_list() -> dict[str, int] | None:
     if not os.path.exists('genre_list.json'):

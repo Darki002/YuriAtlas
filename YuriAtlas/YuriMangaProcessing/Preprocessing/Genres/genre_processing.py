@@ -1,4 +1,4 @@
-from genre_list import get_genre_list
+from .genre_list import get_genre_list
 
 
 class GenreProcessing:
