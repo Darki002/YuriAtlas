@@ -4,7 +4,7 @@ import requests
 URL = "https://api.myanimelist.net/v2/users/{username}/mangalist"
 
 
-def get_list(user_name):
+def get_list(user_name: str) -> list[YuriManga] | None:
 
     headers = {
         'X-MAL-CLIENT-ID': 'Client ID',
@@ -25,7 +25,7 @@ def get_list(user_name):
         return None
 
 
-def _map_response(response):
+def _map_response(response) -> list[YuriManga]:
     mangas = response["data"]
 
     mapped_mangas = []
@@ -37,7 +37,7 @@ def _map_response(response):
     return mapped_mangas
 
 
-def _map_manga(manga_dict):
+def _map_manga(manga_dict) -> YuriManga:
 
     node = manga_dict["node"]
     list_status = manga_dict["list_status"]

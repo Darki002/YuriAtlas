@@ -5,7 +5,7 @@ import gspread
 import logging
 
 
-def _get_worksheet(worksheet_index):
+def _get_worksheet(worksheet_index: int):
     credentials = service_account.Credentials.from_service_account_file(
         './YuriMangaListAccess/yuriatlas-ba7416ea8160.json',
         scopes=['https://www.googleapis.com/auth/spreadsheets']
@@ -16,21 +16,29 @@ def _get_worksheet(worksheet_index):
     return spreadsheet.get_worksheet(worksheet_index)
 
 
-def get_all_genres():
-    worksheet = _get_worksheet(2)
-    genres = worksheet.col_values(19)
-    return genres
+def get_all_genres() -> list[str] | None:
+    try:
+        worksheet = _get_worksheet(2)  # 2 = worksheet "Data"
+        genres = worksheet.col_values(19)  # 19 = Col "S"
+        return genres
+    except Exception as e:
+        logging.error(e)
+        return None
 
 
-def get_unfiltered_genres():
-    worksheet = _get_worksheet(2)
-    genres = worksheet.col_values(18)
-    return genres
+def get_unfiltered_genres() -> list[str] | None:
+    try:
+        worksheet = _get_worksheet(2)  # 2 = worksheet "Data"
+        genres = worksheet.col_values(18)  # 18 = Col "R"
+        return genres
+    except Exception as e:
+        logging.error(e)
+        return None
 
 
 def get_all():
     try:
-        worksheet = _get_worksheet(1)
+        worksheet = _get_worksheet(1)  # 2 = worksheet "List"
         rows = worksheet.get_all_values()
         return [YuriMangaLegacy.from_row(row) for row in rows]
 
@@ -39,7 +47,7 @@ def get_all():
         return None
 
 
-def get_by_name(manga_name):
+def get_by_name(manga_name: str):
     try:
         rows = get_all()
         if len(rows) == 0:
@@ -53,7 +61,7 @@ def get_by_name(manga_name):
         return None
 
 
-def search_by_name(manga_name, nsfw_enabled):
+def search_by_name(manga_name: str, nsfw_enabled: bool):
     try:
         rows = get_all()
         if len(rows) == 0:

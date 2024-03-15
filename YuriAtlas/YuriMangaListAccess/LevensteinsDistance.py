@@ -1,4 +1,4 @@
-def distance(str1, str2):
+def distance(str1: str, str2: str) -> int:
     if str1 == str2:
         return 0
 
