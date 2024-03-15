@@ -1,3 +1,5 @@
+import os
+
 from YuriMangaListAccess.SpreadSheetAccess import get_unfiltered_genres
 import logging
 from collections import Counter
@@ -5,6 +7,9 @@ import json
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+base_path: str = os.path.dirname(__file__)
+FILE_PATH: str = os.path.join(base_path, "genre-list.json")
 
 MAX_GENRES = 20
 MIN_USAGES = 10
@@ -28,7 +33,7 @@ def generate_file() -> None:
     genre_list = [{"Name": genre, "Index": index} for index, genre in enumerate(genre_names)]
 
     try:
-        with open('./genre-list.json', 'w') as outfile:
+        with open(FILE_PATH, 'w') as outfile:
             json.dump(genre_list, outfile, indent=4)
         logger.info('Saved to genre-list.json')
     except Exception as e:

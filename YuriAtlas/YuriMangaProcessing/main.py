@@ -13,7 +13,8 @@ def get_from_me():
 
     [m.process(genre_processing) for m in user_list]
 
-    print(user_list[0])
+    print(len(user_list))
+    print(str(user_list[0]))
 
 
 if __name__ == "__main__":
