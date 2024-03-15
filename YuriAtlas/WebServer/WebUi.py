@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from YuriMangaListAccess import SpreadSheetAccess
 from ReadingList import UserReadingList
+from ReadingList.Websites import Websites
 
 app = Flask(__name__)
 
@@ -48,13 +49,9 @@ def load_user_list():
     username = request.args.get('username')
     source = request.args.get('source')
 
-    result = UserReadingList.get_user_list_from(username, source)
+    
+
     return render_template('manga_list.html')
-
-
-@app.route('/callback_myanimelist')
-def callback_myanimelist():
-    return redirect(url_for('/'))
 
 
 def _render_index(**context):

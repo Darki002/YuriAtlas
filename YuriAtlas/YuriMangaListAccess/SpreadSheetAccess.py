@@ -1,10 +1,9 @@
-import os.path
-
-from YuriMangaProcessing.YuriMangaLegacy import YuriMangaLegacy
+from YuriMangaProcessing.YuriMangaProcessor import YuriManga
 from YuriMangaListAccess.LevensteinsDistance import distance
 from google.oauth2 import service_account
 import gspread
 import logging
+import os.path
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -48,7 +47,7 @@ def get_all():
     try:
         worksheet = _get_worksheet(1)  # 2 = worksheet "List"
         rows = worksheet.get_all_values()
-        return [YuriMangaLegacy.from_row(row) for row in rows]
+        return [_map_to_yuri_mang(row) for row in rows]
 
     except Exception as e:
         logger.error(f"Failed to retrieve data. Error: {e}")
@@ -88,3 +87,29 @@ def search_by_name(manga_name: str, nsfw_enabled: bool):
     except Exception as e:
         logger.error(f"Failed to retrieve data. Error: {e}")
         return None
+
+
+def _map_to_yuri_mang(data) -> YuriManga | None:
+    if len(data) == 0:
+        return None
+
+    genres = str(data[5]).split(',')
+    genres = [g.strip() for g in genres]
+
+    alt_titles = {
+        'jp': "",
+        'en': data[4],
+        'synonyms': []
+    }
+
+    return YuriManga(
+        title=data[0],
+        alternative_titles=alt_titles,
+        description=data[4],
+        nsfw_level=data[3],
+        genres=genres,
+        manga_format=data[7],
+        publication=data[8],
+        user_reading_status=data[1],
+        user_score=data[2]
+    )
