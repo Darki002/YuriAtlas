@@ -1,4 +1,3 @@
-from .genrated_genre_list import generate_file
 import logging
 import json
 import os
@@ -12,14 +11,7 @@ logger = logging.getLogger(__name__)
 
 def get_genre_list() -> dict[str, int] | None:
     if not os.path.exists(FILE_PATH):
-        logger.warning('genre-list.json not set up')
-        try:
-            generate_file()
-        except Exception as e:
-            logger.error(f"Couldn't generate file! {e}")
-            return None
-
-        logger.info("genre-list.json generated")
+        raise FileNotFoundError(FILE_PATH)
 
     with open(FILE_PATH, "r") as outfile:
         data = json.load(outfile)
