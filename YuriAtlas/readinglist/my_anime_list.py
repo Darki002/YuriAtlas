@@ -1,9 +1,8 @@
-import os
-
-from YuriMangaProcessing.YuriMangaProcessor import YuriManga
+from yuri_manga_processing.yuri_manga import YuriManga
 from dotenv import load_dotenv
 import logging
 import requests
+import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

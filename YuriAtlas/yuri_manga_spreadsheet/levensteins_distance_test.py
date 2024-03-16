@@ -1,5 +1,5 @@
 import unittest
-import LevensteinsDistance
+import levensteins_distance
 
 
 class MyTestCase(unittest.TestCase):

@@ -1,4 +1,4 @@
-from WebServer import WebUi
+from webserver import webui
 
 
 if __name__ == '__main__':

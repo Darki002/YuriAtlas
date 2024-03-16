@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
-from YuriMangaListAccess import SpreadSheetAccess
-from ReadingList import UserReadingList
-from ReadingList.Websites import Websites
+from yuri_manga_spreadsheet import spreadsheet_access
+from readinglist import user_readinglist
+from readinglist.websites import Websites
 
 app = Flask(__name__)
 

@@ -1,5 +1,5 @@
-from .MyAnimeList import get_list
-from .Websites import Websites
+from .my_anime_list import get_list
+from .websites import Websites
 
 
 def get_user_list_from(user_name: str, website: Websites):

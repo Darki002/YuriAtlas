@@ -1,4 +1,4 @@
-from YuriMangaListAccess.SpreadSheetAccess import get_unfiltered_genres
+from yuri_manga_spreadsheet.spreadsheet_access import get_unfiltered_genres
 from collections import Counter
 import logging
 import json

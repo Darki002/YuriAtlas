@@ -1,5 +1,5 @@
-from YuriMangaProcessing.YuriMangaProcessor import YuriManga
-from YuriMangaListAccess.LevensteinsDistance import distance
+from yuri_manga_processing.yuri_manga import YuriManga
+from yuri_manga_spreadsheet.levensteins_distance import distance
 from google.oauth2 import service_account
 import gspread
 import logging
