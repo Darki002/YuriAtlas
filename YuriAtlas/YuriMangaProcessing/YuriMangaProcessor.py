@@ -1,6 +1,6 @@
-from YuriMangaProcessing.Preprocessing.text_preprocessing import TextPreprocessor
-from YuriMangaProcessing.Preprocessing import mappings
+from Preprocessing.TextProcessing.text_preprocessing import TextPreprocessor
 from Preprocessing.Genres.genre_processing import GenreProcessing
+from Preprocessing import mappings
 
 
 class YuriManga:

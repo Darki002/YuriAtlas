@@ -1,9 +1,8 @@
-import os
-
 from YuriMangaListAccess.SpreadSheetAccess import get_unfiltered_genres
-import logging
 from collections import Counter
+import logging
 import json
+import os
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

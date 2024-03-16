@@ -1,5 +1,5 @@
 import unittest
-from text_preprocessing import TextPreprocessor
+from .text_preprocessing import TextPreprocessor
 
 
 class TextPreprocessorTest(unittest.TestCase):
