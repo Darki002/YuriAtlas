@@ -5,7 +5,7 @@ import levensteins_distance
 class MyTestCase(unittest.TestCase):
     def test_returns_expected_distance(self):
 
-        result = LevensteinsDistance.distance("book", "back")
+        result = levensteins_distance.distance("book", "back")
 
         self.assertEqual(result, 2)
 

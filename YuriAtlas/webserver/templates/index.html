@@ -14,6 +14,16 @@
         <br/>
         <label for="manga_title">Manga Title:</label>
         <input type="text" id="manga_title" name="manga_title" required/>
+        <br/>
+        <p><b>Genres</b></p>
+        <ul style="text-decoration: none">
+            {% for genre in genres %}
+                <li>
+                    <label for="{{ genre }}">{{ genre }}</label>
+                    <input type="checkbox" id="{{ genre }}" name="{{ genre }}">
+                </li>
+            {% endfor %}
+        </ul>
         <button type="submit">Submit</button>
     </form>
 

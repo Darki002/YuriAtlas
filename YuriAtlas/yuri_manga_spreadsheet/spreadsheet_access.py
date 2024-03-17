@@ -68,20 +68,23 @@ def get_by_name(manga_name: str):
         return None
 
 
-def search_by_name(manga_name: str, nsfw_enabled: bool):
+def search_by_name(manga_name: str, genres: list[str] | None, nsfw_enabled: bool):
     try:
-        rows = get_all()
+        rows: list[YuriManga] = get_all()
         if len(rows) == 0:
             return None
 
         mangas = filter(lambda m: m.title.lower().find(manga_name.lower()) != -1, rows)
         typo_mangas = filter(lambda m: distance(manga_name.lower(), m.title.lower()) < 3, rows)
-        unique_results = set(mangas) | set(typo_mangas)
+        unique_results: set[YuriManga] = set(mangas) | set(typo_mangas)
+
+        if genres:
+            unique_results = set([manga for manga in unique_results if any(g in manga.genres for g in genres)])
 
         if nsfw_enabled:
-            return list(unique_results)
+            return unique_results
 
-        no_nsfw = filter(lambda m: m.nsfw == 'No' or m.nsfw == 'Suggestive', unique_results)
+        no_nsfw = filter(lambda m: m.get_nsfw_level() < 2 or m.nsfw == 'Suggestive', unique_results)
         return list(no_nsfw)
 
     except Exception as e:
