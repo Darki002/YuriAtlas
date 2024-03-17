@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from yuri_manga_spreadsheet import spreadsheet_access
+from readinglist import user_readinglist, websites
 
 app = Flask(__name__)
 
@@ -37,16 +38,21 @@ def get_manga():
     return _render_index(manga=result)
 
 
-@app.route('/manga-list')
-def manga_list():
+@app.route('/user-list')
+def user_list():
     return render_template('manga_list.html')
 
 
-@app.route('/load-user-list')
+@app.route('/user-list', methods=['POST'])
 def load_user_list():
     username = request.args.get('username')
     source = request.args.get('source')
-    return render_template('manga_list.html')
+
+    print(source)
+    source = websites.Websites.try_from(source)
+    result = user_readinglist.get_user_list_from(username, source)
+
+    return render_template('manga_list.html', user_readinglist=result)
 
 
 def _render_index(**context):

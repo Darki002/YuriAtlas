@@ -7,7 +7,7 @@ class YuriManga:
     genre_preprocessor: GenreProcessing | None = None
 
     def __init__(self, title: str, alternative_titles: dict[str, any] | None, description: str, nsfw_level: str,
-                 genres: list[str], manga_format: str, publication: str, user_reading_status: str, user_score: int):
+                 genres: list[str], manga_format: str, publication: str, user_reading_status: str, user_score: int | None):
         self.title: str = title
         self.alternative_titles: dict[str, any] | None = alternative_titles
         self.description: str = description
@@ -16,7 +16,7 @@ class YuriManga:
         self.manga_format: str = manga_format
         self.publication: str = publication
         self.user_reading_status: str = user_reading_status
-        self.user_score: int = user_score
+        self.user_score: int | None = user_score
         # Processed data
         self._processed_description: list[str] | None = None
         self._processed_nsfw_level: int | None = None

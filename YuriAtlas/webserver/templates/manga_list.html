@@ -5,15 +5,53 @@
     <title>Manga List</title>
 </head>
 <body>
-    <form method="post" action="{{ url_for('load-user-list') }}">
+    <form method="post" action="{{ url_for('load_user_list') }}">
         <label for="username">User Name</label>
         <input type="text" id="username" name="username">
         <br/>
        <label for="source">Select the source:</label>
         <select id="source" name="source">
+            <option value="" selected>---</option>
             <option value="MyAnimeList">My Anime List</option>
         </select>
         <br/>
+        <button type="submit">Submit</button>
     </form>
+
+    {% if user_readinglist %}
+        <div style="margin-top: 10px">
+
+            <h3>Your Reading List</h3>
+
+            {% for manga in user_readinglist %}
+                <hr/>
+                <h5>{{ manga.title }}</h5>
+
+                <p>{{ manga.description }}</p>
+
+                <p><b>Status:</b> {{ manga.user_reading_status }}</p>
+
+                {% if manga.user_score > 0 %}
+
+                    <p><b>Score:</b> {{ manga.user_score }}</p>
+
+                {% endif %}
+
+                 <p><b>Format:</b> {{ manga.manga_format }}</p>
+
+                <p><b>Publication:</b> {{ manga.publication }} </p>
+
+                <p><b>NSFW:</b> {{ manga.nsfw_level }} </p>
+
+                <p><b>Genres:</b></p>
+                <ul>
+                    {% for genre in manga.genres %}
+                        <li>{{ genre }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+    {% endif %}
+
 </body>
 </html>
