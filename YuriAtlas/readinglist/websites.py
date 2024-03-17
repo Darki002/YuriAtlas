@@ -6,6 +6,6 @@ class Websites(enum.Enum):
 
     @classmethod
     def try_from(cls, string: str):
-        if string == cls.MyAnimeList:
+        if string == cls.MyAnimeList.value:
             return cls.MyAnimeList
         return None

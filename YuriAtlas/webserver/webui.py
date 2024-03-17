@@ -45,12 +45,12 @@ def user_list():
 
 @app.route('/user-list', methods=['POST'])
 def load_user_list():
-    username = request.args.get('username')
-    source = request.args.get('source')
-
-    print(source)
+    username = request.form.get('username')
+    source = request.form.get('source')
     source = websites.Websites.try_from(source)
+
     result = user_readinglist.get_user_list_from(username, source)
+    print(result)
 
     return render_template('manga_list.html', user_readinglist=result)
 

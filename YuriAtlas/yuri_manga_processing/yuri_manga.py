@@ -98,6 +98,9 @@ class YuriManga:
         return self.user_score
 
     # Alternative Title
+    def has_english_title(self) -> bool:
+        return "en" in self.alternative_titles.keys() and self.alternative_titles["en"]
+
     def get_alternative_title_en(self) -> str:
         return self.alternative_titles['en']
 

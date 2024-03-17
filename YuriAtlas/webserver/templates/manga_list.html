@@ -21,11 +21,20 @@
     {% if user_readinglist %}
         <div style="margin-top: 10px">
 
-            <h3>Your Reading List</h3>
+            <h2>Your Reading List</h2>
 
             {% for manga in user_readinglist %}
                 <hr/>
-                <h5>{{ manga.title }}</h5>
+
+                {% if manga.has_english_title() %}
+
+                    <h3>{{ manga.get_alternative_title_en() }} ({{ manga.title }})</h3>
+
+                {% else %}
+
+                    <h3>{{ manga.title }}</h3>
+
+                {% endif %}
 
                 <p>{{ manga.description }}</p>
 
