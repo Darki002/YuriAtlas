@@ -1,4 +1,5 @@
 from yuri_manga_processing.yuri_manga import YuriManga
+from sklearn.metrics.pairwise import cosine_similarity
 
 MIN_SCORE = 6
 COMPLETED_INDEX = 1
