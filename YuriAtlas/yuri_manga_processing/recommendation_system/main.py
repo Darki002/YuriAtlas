@@ -27,6 +27,8 @@ def create_recommendation(user_reading_list: list[YuriManga], spreadsheet: list[
         manga_rec = YuriMangaRecommendation(index, manga, transformed_description)
         manga_descriptions.append(manga_rec)
 
-    
+    # TODO: Compare the mangas from the favorits and the plan_to_read
+    # TODO: make ranking of the best matches
+
 
     return []
