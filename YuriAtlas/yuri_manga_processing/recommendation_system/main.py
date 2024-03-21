@@ -1,3 +1,4 @@
+from yuri_manga_processing.recommendation_system.yurimanga_recommendation import YuriMangaRecommendation
 from yuri_manga_processing.yuri_manga import YuriManga
 from sklearn.feature_extraction.text import TfidfVectorizer
 
@@ -7,9 +8,25 @@ PLAN_TO_READ_INDEX = 4
 
 
 def create_recommendation(user_reading_list: list[YuriManga], spreadsheet: list[YuriManga]) -> list[YuriManga]:
-    completed_mangas = [manga for manga in user_reading_list if manga.get_user_reading_status() == COMPLETED_INDEX]
-    plan_to_read = [manga for manga in user_reading_list if manga.get_user_reading_status() == PLAN_TO_READ_INDEX]
+    vectorizer = TfidfVectorizer()
 
+    completed_mangas = [manga for manga in user_reading_list if manga.get_user_reading_status() == COMPLETED_INDEX]
+
+    # for later use, just leave it hear, so I can copy it later
+    plan_to_read = [manga for manga in user_reading_list if manga.get_user_reading_status() == PLAN_TO_READ_INDEX]
     completed_favorites = [manga for manga in completed_mangas if manga.user_score >= MIN_SCORE]
+
+    for manga in user_reading_list:
+        description = manga.get_description()
+        vectorizer.fit(description)
+
+    manga_descriptions: list[YuriMangaRecommendation] = []
+
+    for index, manga in enumerate(user_reading_list):
+        transformed_description = vectorizer.transform(manga.get_description())
+        manga_rec = YuriMangaRecommendation(index, manga, transformed_description)
+        manga_descriptions.append(manga_rec)
+
+    
 
     return []
