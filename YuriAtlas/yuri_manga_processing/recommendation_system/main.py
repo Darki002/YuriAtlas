@@ -36,7 +36,5 @@ def create_recommendation(user_reading_list: list[YuriManga], spreadsheet: list[
 
 
 def compare_genres(manga1_genres: list[int], manga2_genres: list[int]) -> int:
-
-    # TODO: count matching genres and count mismatches
-
-    return 0
+    shared_genres = set(manga1_genres).intersection(set(manga2_genres))
+    return len(shared_genres)
