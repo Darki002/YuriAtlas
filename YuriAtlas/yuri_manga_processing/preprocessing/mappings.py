@@ -1,3 +1,7 @@
+COMPLETED_INDEX = 1
+PLAN_TO_READ_INDEX = 4
+
+
 def from_manga_format_to_numeric(manga_format: str) -> int:
     match manga_format:
         case 'unknown':

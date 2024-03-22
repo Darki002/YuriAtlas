@@ -20,10 +20,6 @@ class YuriMangaRecommendation:
         return self.manga.get_manga_format()
 
     @property
-    def publication(self) -> int:
-        return self.manga.get_publication()
-
-    @property
     def user_reading_status(self) -> int:
         return self.manga.get_user_reading_status()
 
