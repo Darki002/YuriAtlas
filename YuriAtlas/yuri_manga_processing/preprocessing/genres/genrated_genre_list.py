@@ -29,7 +29,7 @@ def generate_file() -> None:
 
     genres = list(filter(lambda g: g[1] > MIN_USAGES, genres))
     genre_names: list[str] = [genre for genre, count in genres]
-    genre_list = [{"Name": genre, "Index": index} for index, genre in enumerate(genre_names)]
+    genre_list = [{"Name": genre.lower(), "Index": index} for index, genre in enumerate(genre_names)]
 
     try:
         with open(FILE_PATH, 'w') as outfile:
