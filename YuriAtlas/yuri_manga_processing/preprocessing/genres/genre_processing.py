@@ -15,10 +15,9 @@ class GenreProcessing:
             return None
 
         if lower_genre not in self.genres:
-            self._try_add_and_get_number(lower_genre)
+            self._add_and_get_number(lower_genre)
         return self.genres[lower_genre]
 
-    def _try_add_and_get_number(self, genre: str) -> None:
-        if genre not in self.genres:
-            max_genre = max(self.genres.values())
-            self.genres[genre] = max_genre + 1
+    def _add_and_get_number(self, genre: str) -> None:
+        max_genre = max(self.genres.values())
+        self.genres[genre] = max_genre + 1

@@ -26,4 +26,3 @@ class YuriMangaRecommendation:
     @property
     def user_score(self) -> int:
         return self.manga.get_user_score()
-
