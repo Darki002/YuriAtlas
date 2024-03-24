@@ -1,3 +1,4 @@
+from yuri_manga_processing.preprocessing.genres.genre_processing import GenreProcessing
 from yuri_manga_processing.recommendation_system.user_preferences_processor import UserPreferencesProcessor
 from yuri_manga_processing.recommendation_system.yurimanga_recommendation import YuriMangaRecommendation
 from yuri_manga_processing.preprocessing import mappings
@@ -31,9 +32,8 @@ def create_recommendation(user_reading_list: list[YuriManga], spreadsheet: list[
     plan_to_read = [manga for manga in manga_descriptions if manga.user_reading_status == PLAN_TO_READ_INDEX]
 
     user_preferences = UserPreferencesProcessor(completed_favorites)
-
-    nsfw_counts: dict[int, int] = user_preferences.get_nsfw_level()
-    format_counts: dict[int, int] = user_preferences.get_format()
+    user_preferences.process_nsfw_level()
+    user_preferences.process_format()
 
     # TODO: Compare the mangas from the favorites and the plan_to_read
     # TODO: make ranking of the best matches
@@ -43,4 +43,5 @@ def create_recommendation(user_reading_list: list[YuriManga], spreadsheet: list[
 
 def _compare_genres(manga1_genres: list[int], manga2_genres: list[int]) -> float:
     shared_genres = set(manga1_genres).intersection(set(manga2_genres))
-    return len(shared_genres)
+    total_genres = GenreProcessing().total_genre_count()
+    return len(shared_genres) / total_genres
