@@ -20,6 +20,14 @@ class UserPreferencesProcessor:
             self.process_nsfw_level()
         return self.processed_nsfw_levels
 
+    def compare_nsfw_level(self, manga: YuriMangaRecommendation) -> float:
+        if self.processed_nsfw_levels is None:
+            raise ValueError("NSFW Levels have not been processed")
+
+        manga_nsfw_level_count = self.processed_nsfw_levels.get(manga.manga_format, 0)
+        max_nsfw_level_count = max(self.processed_nsfw_levels.values())
+        return manga_nsfw_level_count / max_nsfw_level_count
+
     # Format
     def process_format(self):
         format_counts: dict[int, int] = {}
@@ -32,3 +40,11 @@ class UserPreferencesProcessor:
         if self.processed_format is None:
             self.process_format()
         return self.processed_format
+
+    def compare_format(self, manga: YuriMangaRecommendation) -> float:
+        if self.processed_format is None:
+            raise ValueError("Format has not been processed")
+
+        manga_format_count = self.processed_format.get(manga.manga_format, 0)
+        max_format_count = max(self.processed_format.values())
+        return manga_format_count / max_format_count

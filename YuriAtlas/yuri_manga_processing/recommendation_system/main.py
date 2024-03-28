@@ -35,13 +35,9 @@ def create_recommendation(user_reading_list: list[YuriManga], spreadsheet: list[
     user_preferences.process_nsfw_level()
     user_preferences.process_format()
 
+    genres_preprocessor = GenreProcessing()
+
     # TODO: Compare the mangas from the favorites and the plan_to_read
     # TODO: make ranking of the best matches
 
     return []
-
-
-def _compare_genres(manga1_genres: list[int], manga2_genres: list[int]) -> float:
-    shared_genres = set(manga1_genres).intersection(set(manga2_genres))
-    total_genres = GenreProcessing().total_genre_count()
-    return len(shared_genres) / total_genres
