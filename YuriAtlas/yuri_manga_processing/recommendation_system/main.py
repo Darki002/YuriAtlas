@@ -26,7 +26,8 @@ def create_recommendation(user_reading_list: list[YuriManga],
     transformed_descriptions = vectorizer.transform(list(manga_description_dict.values()))
 
     manga_descriptions: list[YuriMangaRecommendation] = []
-    for index, (manga, transformed_description) in enumerate(zip(manga_description_dict.keys(), transformed_descriptions)):
+    for index, (manga, transformed_description) in enumerate(zip(manga_description_dict.keys(),
+                                                                 transformed_descriptions)):
         manga_rec = YuriMangaRecommendation(index, manga, transformed_description)
         manga_descriptions.append(manga_rec)
 
@@ -42,7 +43,6 @@ def create_recommendation(user_reading_list: list[YuriManga],
      .process_genres())
 
     final_results: dict[YuriMangaRecommendation, float] = {}
-
     for manga in plan_to_read:
         result = user_preferences.compare(manga)
         # TODO: compare description
