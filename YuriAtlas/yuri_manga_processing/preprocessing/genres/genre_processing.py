@@ -8,7 +8,8 @@ class GenreProcessing:
     def __init__(self):
         self.genres = get_genre_list()
 
-    def total_genre_count(self):
+    @property
+    def genre_count(self):
         return len(self.genres)
 
     def process_genre(self, genre: str) -> int | None:

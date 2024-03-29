@@ -36,10 +36,10 @@ class YuriManga:
         self._processed_description = preprocessor.process().text
         return self
 
-    def get_description(self):
+    def get_description(self) -> str:
         if self._processed_description is None:
             self.process_description()
-        return self._processed_description
+        return ' '.join(self._processed_description)
 
     # NSFW Level
     def process_nsfw_level(self):

@@ -26,7 +26,3 @@ class YuriMangaRecommendation:
     @property
     def user_score(self) -> int:
         return self.manga.get_user_score()
-
-    def compare_genres(self, other: 'YuriMangaRecommendation', total_genre_count) -> float:
-        shared_genres = set(self.genres).intersection(set(other.genres))
-        return len(shared_genres) / total_genre_count
