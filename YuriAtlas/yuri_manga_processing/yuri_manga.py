@@ -1,3 +1,4 @@
+from .manga_source import MangaSource
 from .preprocessing.description.text_preprocessing import TextPreprocessor
 from .preprocessing.genres.genre_processing import GenreProcessing
 from .preprocessing import mappings
@@ -6,10 +7,11 @@ from .preprocessing import mappings
 class YuriManga:
     genre_preprocessor: GenreProcessing | None = None
 
-    def __init__(self, manga_id: str, title: str, alternative_titles: dict[str, any] | None, description: str,
+    def __init__(self, manga_id: str, source: MangaSource, title: str, alternative_titles: dict[str, any] | None, description: str,
                  nsfw_level: str, genres: list[str], manga_format: str, publication: str, user_reading_status: str,
                  user_score: int | None):
         self.manga_id: str = manga_id
+        self.source: MangaSource = source
         self.title: str = title
         self.alternative_titles: dict[str, any] | None = alternative_titles
         self.description: str = description

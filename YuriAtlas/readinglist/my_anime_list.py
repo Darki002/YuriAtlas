@@ -1,3 +1,4 @@
+from yuri_manga_processing.manga_source import MangaSource
 from yuri_manga_processing.yuri_manga import YuriManga
 from dotenv import load_dotenv
 import logging
@@ -57,6 +58,7 @@ def _map_manga(manga_dict) -> YuriManga:
 
     return YuriManga(
         manga_id=str(node["id"]),
+        source=MangaSource.MyAnimeList,
         title=node["title"],
         alternative_titles=node["alternative_titles"],
         description=node["synopsis"],

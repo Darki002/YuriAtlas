@@ -1,3 +1,4 @@
+from yuri_manga_processing.manga_source import MangaSource
 from yuri_manga_processing.yuri_manga import YuriManga
 from yuri_manga_spreadsheet.levensteins_distance import distance
 from google.oauth2 import service_account
@@ -107,6 +108,7 @@ def _map_to_yuri_mang(data, index: int) -> YuriManga | None:
 
     return YuriManga(
         manga_id=str(index),
+        source=MangaSource.SpreadSheet,
         title=data[0],
         alternative_titles=alt_titles,
         description=data[4],
