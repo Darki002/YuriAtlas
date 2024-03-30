@@ -59,5 +59,20 @@ def _render_index(**context):
     return render_template('index.html', genres=genres, **context)
 
 
+@app.route('/recommendation', methods=['GET'])
+def recommendation():
+    return render_template('rec_system/index.html')
+
+
+@app.route('/recommendation', methods=['POST'])
+def recommendation_post():
+    user_name = request.form.get('username')
+
+    source = request.form.get('source')
+    source = websites.Websites.try_from(source)
+
+    return render_template('rec_system/index.html')
+
+
 def run():
     app.run(debug=True)

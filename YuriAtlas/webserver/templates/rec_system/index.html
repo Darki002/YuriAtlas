@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="post" action="{{ url_for('recommendation') }}">
+        <label for="username">User Name</label>
+        <input type="text" id="username" name="username">
+        <br/>
+       <label for="source">Select the source:</label>
+        <select id="source" name="source">
+            <option value="" selected>---</option>
+            <option value="MyAnimeList">My Anime List</option>
+        </select>
+        <br/>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
