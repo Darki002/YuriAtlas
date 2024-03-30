@@ -17,6 +17,12 @@ def create_recommendation(user_reading_list: list[YuriManga],
                           additional_mangas: list[YuriManga],
                           genres_preprocessor: GenreProcessing) -> list[YuriManga]:
 
+    for manga in user_reading_list:
+        manga.set_genre_preprocessor(genres_preprocessor)
+
+    for manga in additional_mangas:
+        manga.set_genre_preprocessor(genres_preprocessor)
+
     vectorizer = TfidfVectorizer(stop_words=None)
 
     descriptions: list[str] = [manga.get_description() for manga in user_reading_list]

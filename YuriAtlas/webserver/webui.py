@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request
+
+from yuri_manga_processing.manga_source import MangaSource
 from yuri_manga_spreadsheet import spreadsheet_access
 from yuri_manga_processing.recommendation_system import main as rec_system
-from readinglist import user_readinglist, websites
+from readinglist import user_readinglist, websites, my_anime_list
 
 app = Flask(__name__)
 
@@ -11,6 +13,35 @@ genres = spreadsheet_access.get_all_genres()
 @app.route('/')
 def home():
     return _render_index()
+
+
+@app.route('/manga')
+def manga():
+
+    source = request.args.get('source')
+    manga_id = request.args.get('id')
+
+    print(f"Source: {source}, ID: {manga_id}")
+
+    if source.isdigit() is False:
+        return _render_index()
+
+    source = int(source)
+    match source:
+        case MangaSource.SpreadSheet.value:
+            result = spreadsheet_access.get_by_id(manga_id)
+            if result is None:
+                return _render_index()
+            return render_template('manga.html', manga=result)
+
+        case MangaSource.MyAnimeList.value:
+            result = my_anime_list.get_manga(manga_id)
+            if result is None:
+                return _render_index()
+            return render_template('manga.html', manga=result[0], image_url=result[1])
+
+        case _:
+            return _render_index()
 
 
 @app.route('/search_manga', methods=['POST'])
@@ -74,7 +105,7 @@ def recommendation_post():
 
     rec = rec_system.recommend_for(user_name, source)
 
-    return render_template('rec_system/index.html', rec=rec, username=user_name)
+    return render_template('rec_system/recommendation.html', rec=rec, username=user_name)
 
 
 def run():

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ manga.title }}</title>
+</head>
+<body>
+    <h1>{{ manga.title }}</h1>
+    <h2>{{ manga.alternative_title }}</h2>
+
+    {% if image_url %}
+        <img src="{{ image_url }}" alt="{{ manga.title }}">
+    {% endif %}
+
+    <p><b>Format:</b> {{ manga.manga_format }}</p>
+
+    <p><b>Publication:</b> {{ manga.publication }} </p>
+
+    <p><b>NSFW:</b> {{ manga.nsfw_level }} </p>
+
+    <p><b>Genres:</b></p>
+    <ul>
+        {% for genre in manga.genres %}
+            <li>{{ genre }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

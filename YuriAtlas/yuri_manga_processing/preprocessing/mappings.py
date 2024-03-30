@@ -60,3 +60,5 @@ def from_user_reading_status_to_numeric(user_reading_status: str) -> int:
             return 3
         case 'plan_to_read':
             return 4
+        case _:
+            return 4

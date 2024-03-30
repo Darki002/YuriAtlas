@@ -76,7 +76,7 @@ class UserPreferencesProcessor:
         matches: int = 0
 
         for genre in manga.genres:
-            if genre in self.processed_genres.keys():
+            if genre in self.get_genres().keys():
                 matches += 1
 
         return matches / self.genrs_processor.genre_count

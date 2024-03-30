@@ -55,6 +55,15 @@ def get_all():
         return None
 
 
+def get_by_id(manga_id: str) -> YuriManga | None:
+    if manga_id.isdigit() is False:
+        return None
+    manga_id = int(manga_id)
+
+    mangas = get_all()
+    return mangas[manga_id]
+
+
 def get_by_name(manga_name: str):
     try:
         rows = get_all()

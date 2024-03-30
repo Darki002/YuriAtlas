@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Yuri Atlas</title>
+</head>
+<body>
+
+    <h1>Recommendation for {{ username }}</h1>
+
+    <ol>
+        {% for manga in rec %}
+            <li>
+                <a href="{{ url_for('manga', source=manga.source.value, id=manga.manga_id) }}">{{ manga.title }}</a>
+            </li>
+        {% endfor %}
+    </ol>
+</body>
+</html>
