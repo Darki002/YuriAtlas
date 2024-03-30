@@ -1,95 +1,32 @@
-from yuri_manga_processing.preprocessing.genres.genre_processing import GenreProcessing
-from yuri_manga_processing.recommendation_system.user_preferences_processor import UserPreferencesProcessor
-from yuri_manga_processing.recommendation_system.yurimanga_recommendation import YuriMangaRecommendation
-from yuri_manga_processing.preprocessing import mappings
-from yuri_manga_processing.yuri_manga import YuriManga
-from sklearn.feature_extraction.text import TfidfVectorizer
-# Temp
+from .recommendation_system import create_recommendation
+from yuri_manga_spreadsheet import spreadsheet_access
 from readinglist import user_readinglist
 from readinglist.websites import Websites
+from yuri_manga_processing.yuri_manga import YuriManga
+from yuri_manga_processing.preprocessing.genres.genre_processing import GenreProcessing
+import logging
 
-MIN_SCORE = 6
-COMPLETED_INDEX = mappings.COMPLETED_INDEX
-PLAN_TO_READ_INDEX = mappings.PLAN_TO_READ_INDEX
-
-
-def create_recommendation(user_reading_list: list[YuriManga],
-                          spreadsheet: list[YuriManga],
-                          genres_preprocessor: GenreProcessing) -> list[YuriManga]:
-
-    vectorizer = TfidfVectorizer(stop_words=None)
-
-    descriptions: list[str] = [manga.get_description() for manga in user_reading_list]
-    vectorizer.fit(descriptions)
-
-    manga_description_dict = {manga: manga.get_description() for manga in user_reading_list}
-    transformed_descriptions = vectorizer.transform(list(manga_description_dict.values()))
-
-    manga_descriptions: list[YuriMangaRecommendation] = []
-    for (manga, transformed_description) in zip(manga_description_dict.keys(), transformed_descriptions):
-        manga_rec = YuriMangaRecommendation(manga, transformed_description)
-        manga_descriptions.append(manga_rec)
-
-    completed_mangas = [manga for manga in manga_descriptions if manga.user_reading_status == COMPLETED_INDEX]
-
-    completed_favorites = [manga for manga in completed_mangas if manga.user_score >= MIN_SCORE]
-    plan_to_read = [manga for manga in manga_descriptions if manga.user_reading_status == PLAN_TO_READ_INDEX]
-
-    user_preferences = UserPreferencesProcessor(completed_favorites, genres_preprocessor)
-    (user_preferences
-     .process_nsfw_level()
-     .process_format()
-     .process_genres())
-
-    final_results: dict[YuriMangaRecommendation, float] = {}
-    for manga in plan_to_read:
-        result = user_preferences.compare(manga)
-        # TODO: compare description
-        format_weight = 0.2
-        nsfw_level_weight = 0.5
-        genre_weight = 0.7
-
-        final_results[manga] = (result[0] * format_weight
-                                + result[1] * nsfw_level_weight
-                                + result[2] * genre_weight) / 3
-
-    top_5 = sorted(final_results, key=final_results.get, reverse=True)[:5]
-
-    best_score = max(final_results.values())
-    print(f"Best Score: {best_score}")
-
-    for index, manga_rec in enumerate(top_5):
-        title = manga_rec.manga.title
-        score = final_results[manga_rec]
-        print(f"{index + 1}. Title: {title} - Score: {score}")
-
-    return [manga_rec.manga for manga_rec in top_5]
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
-if __name__ == "__main__":
-    reading_list = user_readinglist.get_user_list_from("Darki002", Websites.MyAnimeList)
+def recommend_for(user_name: str, platform: Websites) -> list[YuriManga] | None:
+    """
+    Creates a recommendation list for a user based on their reading list.
+    :param user_name: The username on the platform the user chose.
+    :param platform: The platform of user's reading list.
+    :return: A list of YuriManga objects or None if an error occurred.
+    """
 
-    print("\n")
-    print("--------------------Completed Manga--------------------")
-    print("\n")
+    try:
+        user_reading_list = user_readinglist.get_user_list_from(user_name, platform)
+    except Exception as e:
+        logger.error(f"Failed to retrieve data for User {user_name} from source {platform.value}. Error: {e}")
+        return None
 
-    completed = [manga for manga in reading_list if manga.get_user_reading_status() == COMPLETED_INDEX]
-    for c in completed:
-        print(str(c))
+    spreadsheet = spreadsheet_access.get_all()
+    if spreadsheet is None:
+        return None
 
-    print("\n")
-    print("--------------------Recommendation--------------------")
-    print("\n")
-
-    genre_preprocessor = GenreProcessing()
-    for m in reading_list:
-        m.set_genre_preprocessor(genre_preprocessor)
-
-    recommendation = create_recommendation(reading_list, [], genre_preprocessor)
-
-    print("\n")
-    print("--------------------Best Result--------------------")
-    print("\n")
-
-    the_one = filter(lambda ma: ma.title == recommendation[0].title, reading_list)
-    print(str(list(the_one)[0]))
+    genres_preprocessor = GenreProcessing()
+    return create_recommendation(user_reading_list, spreadsheet, genres_preprocessor)

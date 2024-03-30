@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from yuri_manga_spreadsheet import spreadsheet_access
+from yuri_manga_processing.recommendation_system import main as rec_system
 from readinglist import user_readinglist, websites
 
 app = Flask(__name__)
@@ -71,7 +72,9 @@ def recommendation_post():
     source = request.form.get('source')
     source = websites.Websites.try_from(source)
 
-    return render_template('rec_system/index.html')
+    rec = rec_system.recommend_for(user_name, source)
+
+    return render_template('rec_system/index.html', rec=rec, username=user_name)
 
 
 def run():
