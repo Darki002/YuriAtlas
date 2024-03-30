@@ -26,9 +26,8 @@ def create_recommendation(user_reading_list: list[YuriManga],
     transformed_descriptions = vectorizer.transform(list(manga_description_dict.values()))
 
     manga_descriptions: list[YuriMangaRecommendation] = []
-    for index, (manga, transformed_description) in enumerate(zip(manga_description_dict.keys(),
-                                                                 transformed_descriptions)):
-        manga_rec = YuriMangaRecommendation(index, manga, transformed_description)
+    for (manga, transformed_description) in zip(manga_description_dict.keys(), transformed_descriptions):
+        manga_rec = YuriMangaRecommendation(manga, transformed_description)
         manga_descriptions.append(manga_rec)
 
     completed_mangas = [manga for manga in manga_descriptions if manga.user_reading_status == COMPLETED_INDEX]
