@@ -56,6 +56,7 @@ def _map_manga(manga_dict) -> YuriManga:
     genres = _get_genre_names(node["genres"])
 
     return YuriManga(
+        manga_id=str(node["id"]),
         title=node["title"],
         alternative_titles=node["alternative_titles"],
         description=node["synopsis"],

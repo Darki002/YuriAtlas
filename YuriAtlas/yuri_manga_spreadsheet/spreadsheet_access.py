@@ -47,7 +47,7 @@ def get_all():
     try:
         worksheet = _get_worksheet(1)  # 2 = worksheet "List"
         rows = worksheet.get_all_values()
-        return [_map_to_yuri_mang(row) for row in rows]
+        return [_map_to_yuri_mang(row, index) for index, row in enumerate(rows)]
 
     except Exception as e:
         logger.error(f"Failed to retrieve data. Error: {e}")
@@ -92,7 +92,7 @@ def search_by_name(manga_name: str, genres: list[str] | None, nsfw_enabled: bool
         return None
 
 
-def _map_to_yuri_mang(data) -> YuriManga | None:
+def _map_to_yuri_mang(data, index: int) -> YuriManga | None:
     if len(data) == 0:
         return None
 
@@ -106,6 +106,7 @@ def _map_to_yuri_mang(data) -> YuriManga | None:
     }
 
     return YuriManga(
+        manga_id=str(index),
         title=data[0],
         alternative_titles=alt_titles,
         description=data[4],
