@@ -1,6 +1,6 @@
 from yuri_manga_processing.manga_source import MangaSource
 from yuri_manga_processing.yuri_manga import YuriManga
-from yuri_manga_spreadsheet.levensteins_distance import distance
+from data_access.yuri_manga_spreadsheet.levensteins_distance import distance
 from google.oauth2 import service_account
 import gspread
 import logging
@@ -106,6 +106,10 @@ def _map_to_yuri_mang(data, index: int) -> YuriManga | None:
     if len(data) == 0:
         return None
 
+    desc = data[4]
+    if desc == "---":
+        desc = ""
+
     genres = str(data[5]).split(',')
     genres = [g.strip() for g in genres]
 
@@ -120,7 +124,7 @@ def _map_to_yuri_mang(data, index: int) -> YuriManga | None:
         source=MangaSource.SpreadSheet,
         title=data[0],
         alternative_titles=alt_titles,
-        description=data[4],
+        description=desc,
         nsfw_level=data[3],
         genres=genres,
         manga_format=data[7],

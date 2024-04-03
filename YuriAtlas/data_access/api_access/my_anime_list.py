@@ -99,6 +99,9 @@ def _map_manga(manga_dict) -> YuriManga:
 
     genres = _get_genre_names(node["genres"])
 
+    # TODO: MAL seems to have a little watermark at the end of every description.
+    #  Should be removed before creating the YuriMang class
+
     return YuriManga(
         manga_id=str(node["id"]),
         source=MangaSource.MyAnimeList,

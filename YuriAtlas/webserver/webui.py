@@ -1,12 +1,12 @@
 from flask import Flask, render_template, request
 
 from yuri_manga_processing.manga_source import MangaSource
-from yuri_manga_spreadsheet import spreadsheet_access
+from data_access.api_access import my_anime_list, main as user_readinglist
+from data_access.api_access.apisource import ApiSource
+from data_access.yuri_manga_spreadsheet import spreadsheet_access
 from yuri_manga_processing.recommendation_system import main as rec_system
-from readinglist import user_readinglist, websites, my_anime_list
 
 app = Flask(__name__)
-
 genres = spreadsheet_access.get_all_genres()
 
 
@@ -79,7 +79,7 @@ def user_list():
 def load_user_list():
     username = request.form.get('username')
     source = request.form.get('source')
-    source = websites.Websites.try_from(source)
+    source = ApiSource.try_from(source)
 
     result = user_readinglist.get_user_list_from(username, source)
     print(result)
@@ -101,7 +101,7 @@ def recommendation_post():
     user_name = request.form.get('username')
 
     source = request.form.get('source')
-    source = websites.Websites.try_from(source)
+    source = ApiSource.try_from(source)
 
     rec = rec_system.recommend_for(user_name, source)
 

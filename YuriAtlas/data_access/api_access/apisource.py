@@ -1,7 +1,7 @@
 import enum
 
 
-class Websites(enum.Enum):
+class ApiSource(enum.Enum):
     MyAnimeList = "MyAnimeList"
 
     @classmethod

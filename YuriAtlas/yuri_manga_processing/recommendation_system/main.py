@@ -1,7 +1,7 @@
 from .recommendation_system import RecommendationEngine
-from yuri_manga_spreadsheet import spreadsheet_access
-from readinglist import user_readinglist
-from readinglist.websites import Websites
+from data_access.yuri_manga_spreadsheet import spreadsheet_access
+from data_access.api_access import main
+from data_access.api_access.apisource import ApiSource
 from yuri_manga_processing.yuri_manga import YuriManga
 import logging
 
@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def recommend_for(user_name: str, platform: Websites) -> list[YuriManga] | None:
+def recommend_for(user_name: str, platform: ApiSource) -> list[YuriManga] | None:
     """
     Creates a recommendation list for a user based on their reading list.
     :param user_name: The username on the platform the user chose.
