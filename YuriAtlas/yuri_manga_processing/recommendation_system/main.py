@@ -1,9 +1,8 @@
-from .recommendation_system import create_recommendation
+from .recommendation_system import RecommendationEngine
 from yuri_manga_spreadsheet import spreadsheet_access
 from readinglist import user_readinglist
 from readinglist.websites import Websites
 from yuri_manga_processing.yuri_manga import YuriManga
-from yuri_manga_processing.preprocessing.genres.genre_processing import GenreProcessing
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -28,5 +27,7 @@ def recommend_for(user_name: str, platform: Websites) -> list[YuriManga] | None:
     if spreadsheet is None:
         return None
 
-    genres_preprocessor = GenreProcessing()
-    return create_recommendation(user_reading_list, spreadsheet, genres_preprocessor)
+    recommendation_engine = RecommendationEngine(user_reading_list, spreadsheet)
+    recommendation_engine.set_up()
+
+    return recommendation_engine.create_recommendation()

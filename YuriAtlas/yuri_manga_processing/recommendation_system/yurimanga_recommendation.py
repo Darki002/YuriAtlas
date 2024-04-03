@@ -2,9 +2,9 @@ from yuri_manga_processing.yuri_manga import YuriManga
 
 
 class YuriMangaRecommendation:
-    def __init__(self, manga: YuriManga, transformed_description):
+    def __init__(self, manga: YuriManga):
         self.manga: YuriManga = manga
-        self.transformed_description = transformed_description
+        self.tfdtf_description = None
 
     @property
     def genres(self) -> list[int]:
@@ -25,3 +25,10 @@ class YuriMangaRecommendation:
     @property
     def user_score(self) -> int:
         return self.manga.get_user_score()
+
+    @property
+    def description(self) -> str:
+        return self.manga.get_description()
+
+    def set_tfdtf_description(self, tfdtf_description):
+        self.tfdtf_description = tfdtf_description

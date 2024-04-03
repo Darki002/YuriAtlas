@@ -1,92 +1,80 @@
 from yuri_manga_processing.preprocessing.genres.genre_processing import GenreProcessing
 from yuri_manga_processing.recommendation_system.user_preferences_processor import UserPreferencesProcessor
 from yuri_manga_processing.recommendation_system.yurimanga_recommendation import YuriMangaRecommendation
+from yuri_manga_processing.recommendation_system.rec_weights import RecWeights
 from yuri_manga_processing.preprocessing import mappings
 from yuri_manga_processing.yuri_manga import YuriManga
 from sklearn.feature_extraction.text import TfidfVectorizer
-# Temp
-from readinglist import user_readinglist
-from readinglist.websites import Websites
-
-MIN_SCORE = 6
-COMPLETED_INDEX = mappings.COMPLETED_INDEX
-PLAN_TO_READ_INDEX = mappings.PLAN_TO_READ_INDEX
+from math_helper.lin_algebra import cosine_sim
+from math_helper.avg import weighted_avg, exponential_decay
 
 
-def create_recommendation(user_reading_list: list[YuriManga],
-                          additional_mangas: list[YuriManga],
-                          genres_preprocessor: GenreProcessing) -> list[YuriManga]:
+class RecommendationEngine:
+    min_score = 6
+    completed_index = mappings.COMPLETED_INDEX
+    plan_to_read_index = mappings.PLAN_TO_READ_INDEX
 
-    for manga in user_reading_list:
-        manga.set_genre_preprocessor(genres_preprocessor)
-
-    for manga in additional_mangas:
-        manga.set_genre_preprocessor(genres_preprocessor)
+    plan_to_read: list[YuriMangaRecommendation] | None = None
+    favorites: list[YuriMangaRecommendation] | None = None
 
     vectorizer = TfidfVectorizer(stop_words=None)
+    genres_preprocessor: GenreProcessing = GenreProcessing()
+    user_preferences: UserPreferencesProcessor | None = None
+    rec_weights: RecWeights = RecWeights()
 
-    descriptions: list[str] = [manga.get_description() for manga in user_reading_list]
-    vectorizer.fit(descriptions)
+    def __init__(self, mangas: list[YuriManga], additional_mangas: list[YuriManga] = ()):
+        self.mangas: list[YuriMangaRecommendation] = [YuriMangaRecommendation(m) for m in mangas]
+        self.additional_mangas: list[YuriMangaRecommendation] = [YuriMangaRecommendation(a) for a in additional_mangas]
 
-    manga_description_dict = {manga: manga.get_description() for manga in user_reading_list}
-    transformed_descriptions = vectorizer.transform(list(manga_description_dict.values()))
+    def set_up(self):
+        for manga in self.mangas + self.additional_mangas:
+            manga.manga.set_genre_preprocessor(self.genres_preprocessor)
 
-    manga_descriptions: list[YuriMangaRecommendation] = []
-    for (manga, transformed_description) in zip(manga_description_dict.keys(), transformed_descriptions):
-        manga_rec = YuriMangaRecommendation(manga, transformed_description)
-        manga_descriptions.append(manga_rec)
+        completed_mangas = [manga for manga in self.mangas if manga.user_reading_status == self.completed_index]
+        self.favorites = [manga for manga in completed_mangas if manga.user_score >= self.min_score]
+        self.plan_to_read = [manga for manga in self.mangas if manga.user_reading_status == self.plan_to_read_index]
 
-    completed_mangas = [manga for manga in manga_descriptions if manga.user_reading_status == COMPLETED_INDEX]
+        self.user_preferences = UserPreferencesProcessor(self.favorites, self.genres_preprocessor)
 
-    completed_favorites = [manga for manga in completed_mangas if manga.user_score >= MIN_SCORE]
-    plan_to_read = [manga for manga in manga_descriptions if manga.user_reading_status == PLAN_TO_READ_INDEX]
+    def create_recommendation(self) -> list[YuriManga]:
 
-    user_preferences = UserPreferencesProcessor(completed_favorites, genres_preprocessor)
-    (user_preferences
-     .process_nsfw_level()
-     .process_format()
-     .process_genres())
+        if self.user_preferences is None or self.plan_to_read is None or self.favorites is None:
+            raise ValueError("Not properly set up. Probably set_up() wasn't called.")
 
-    final_results: dict[YuriMangaRecommendation, float] = {}
-    for manga in plan_to_read:
-        result = user_preferences.compare(manga)
-        # TODO: compare description
-        format_weight = 0.2
-        nsfw_level_weight = 0.5
-        genre_weight = 0.7
+        self._fit()._transform()
 
-        final_results[manga] = (result[0] * format_weight
-                                + result[1] * nsfw_level_weight
-                                + result[2] * genre_weight) / 3
+        final_results: dict[YuriMangaRecommendation, float] = {}
+        for manga in self.plan_to_read:
+            result = self.user_preferences.compare(manga)
 
-    top_5 = sorted(final_results, key=final_results.get, reverse=True)[:5]
-    return [manga_rec.manga for manga_rec in top_5]
+            similarities = [cosine_sim(fav.tfdtf_description, manga.tfdtf_description) for fav in self.favorites]
 
+            similarities = sorted(similarities, reverse=True)
+            weights = [exponential_decay(i) for i in similarities]
 
-if __name__ == "__main__":
-    reading_list = user_readinglist.get_user_list_from("Darki002", Websites.MyAnimeList)
+            dec_sim = weighted_avg(similarities, weights)
 
-    print("\n")
-    print("--------------------Completed Manga--------------------")
-    print("\n")
+            final_values = [*result, dec_sim]
+            final_results[manga] = weighted_avg(final_values, self.rec_weights.weights)
 
-    completed = [manga for manga in reading_list if manga.get_user_reading_status() == COMPLETED_INDEX]
-    for c in completed:
-        print(str(c))
+        top_5 = sorted(final_results, key=final_results.get, reverse=True)[:5]
+        return [manga_rec.manga for manga_rec in top_5]
 
-    print("\n")
-    print("--------------------Recommendation--------------------")
-    print("\n")
+    def _fit(self):
+        all_mangas = self.mangas + self.additional_mangas
+        descriptions: list[str] = [manga.description for manga in all_mangas]
+        self.vectorizer.fit(descriptions)
 
-    genre_preprocessor = GenreProcessing()
-    for m in reading_list:
-        m.set_genre_preprocessor(genre_preprocessor)
+        (self.user_preferences
+         .process_nsfw_level()
+         .process_format()
+         .process_genres())
+        return self
 
-    recommendation = create_recommendation(reading_list, [], genre_preprocessor)
+    def _transform(self):
+        manga_description_dict = {manga: manga.description for manga in self.mangas}
+        transformed_descriptions = self.vectorizer.transform(list(manga_description_dict.values()))
 
-    print("\n")
-    print("--------------------Best Result--------------------")
-    print("\n")
-
-    the_one = filter(lambda ma: ma.title == recommendation[0].title, reading_list)
-    print(str(list(the_one)[0]))
+        for (manga, transformed_description) in zip(manga_description_dict.keys(), transformed_descriptions):
+            manga.set_tfdtf_description(transformed_description)
+        return self
