@@ -1,6 +1,6 @@
 from .recommendation_system import RecommendationEngine
 from data_access.yuri_manga_spreadsheet import spreadsheet_access
-from data_access.api_access import main
+from data_access.api_access import main as user_readinglist
 from data_access.api_access.apisource import ApiSource
 from yuri_manga_processing.yuri_manga import YuriManga
 import logging
