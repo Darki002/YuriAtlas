@@ -5,7 +5,7 @@ from yuri_manga_processing.recommendation_system.rec_weights import RecWeights
 from yuri_manga_processing.preprocessing import mappings
 from yuri_manga_processing.yuri_manga import YuriManga
 from sklearn.feature_extraction.text import TfidfVectorizer
-from math_helper.lin_algebra import cosine_sim
+from sklearn.metrics.pairwise import cosine_similarity
 from math_helper.avg import weighted_avg, exponential_decay
 
 
@@ -26,7 +26,7 @@ class RecommendationEngine:
         self.mangas: list[YuriMangaRecommendation] = [YuriMangaRecommendation(m) for m in mangas]
         self.additional_mangas: list[YuriMangaRecommendation] = [YuriMangaRecommendation(a) for a in additional_mangas]
 
-    def set_up(self):
+    def _set_up(self):
         for manga in self.mangas + self.additional_mangas:
             manga.manga.set_genre_preprocessor(self.genres_preprocessor)
 
@@ -35,19 +35,16 @@ class RecommendationEngine:
         self.plan_to_read = [manga for manga in self.mangas if manga.user_reading_status == self.plan_to_read_index]
 
         self.user_preferences = UserPreferencesProcessor(self.favorites, self.genres_preprocessor)
+        return self
 
     def create_recommendation(self) -> list[YuriManga]:
-
-        if self.user_preferences is None or self.plan_to_read is None or self.favorites is None:
-            raise ValueError("Not properly set up. Probably set_up() wasn't called.")
-
-        self._fit()._transform()
+        self._set_up()._fit()._transform()
 
         final_results: dict[YuriMangaRecommendation, float] = {}
         for manga in self.plan_to_read:
             result = self.user_preferences.compare(manga)
 
-            similarities = [cosine_sim(fav.tfdtf_description, manga.tfdtf_description) for fav in self.favorites]
+            similarities = [cosine_similarity(fav.tfidf_description, manga.tfidf_description) for fav in self.favorites]
 
             similarities = sorted(similarities, reverse=True)
             weights = [exponential_decay(i) for i in similarities]
@@ -58,6 +55,7 @@ class RecommendationEngine:
             final_results[manga] = weighted_avg(final_values, self.rec_weights.weights)
 
         top_5 = sorted(final_results, key=final_results.get, reverse=True)[:5]
+
         return [manga_rec.manga for manga_rec in top_5]
 
     def _fit(self):

@@ -4,7 +4,7 @@ from yuri_manga_processing.yuri_manga import YuriManga
 class YuriMangaRecommendation:
     def __init__(self, manga: YuriManga):
         self.manga: YuriManga = manga
-        self.tfdtf_description = None
+        self.tfidf_description = None
 
     @property
     def genres(self) -> list[int]:
@@ -31,4 +31,4 @@ class YuriMangaRecommendation:
         return self.manga.get_description()
 
     def set_tfdtf_description(self, tfdtf_description):
-        self.tfdtf_description = tfdtf_description
+        self.tfidf_description = tfdtf_description

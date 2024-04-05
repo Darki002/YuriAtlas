@@ -28,6 +28,5 @@ def recommend_for(user_name: str, platform: ApiSource) -> list[YuriManga] | None
         return None
 
     recommendation_engine = RecommendationEngine(user_reading_list, spreadsheet)
-    recommendation_engine.set_up()
 
     return recommendation_engine.create_recommendation()
