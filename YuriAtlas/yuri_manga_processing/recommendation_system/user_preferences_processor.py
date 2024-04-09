@@ -28,7 +28,7 @@ class UserPreferencesProcessor:
         if self.processed_nsfw_levels is None:
             raise ValueError("NSFW Levels have not been processed")
 
-        manga_nsfw_level_count = self.processed_nsfw_levels.get(manga.manga_format, 0)
+        manga_nsfw_level_count = self.processed_nsfw_levels.get(manga.nsfw_level, 0)
         max_nsfw_level_count = max(self.processed_nsfw_levels.values())
         return manga_nsfw_level_count / max_nsfw_level_count
 
