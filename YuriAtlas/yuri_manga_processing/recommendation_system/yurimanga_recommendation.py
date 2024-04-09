@@ -1,3 +1,4 @@
+from sklearn.metrics.pairwise import cosine_similarity
 from yuri_manga_processing.yuri_manga import YuriManga
 
 
@@ -32,3 +33,6 @@ class YuriMangaRecommendation:
 
     def set_tfdtf_description(self, tfdtf_description):
         self.tfidf_description = tfdtf_description
+
+    def compare_description(self, other: 'YuriMangaRecommendation'):
+        return cosine_similarity(self.description, other.description)

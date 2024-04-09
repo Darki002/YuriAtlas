@@ -5,7 +5,6 @@ from yuri_manga_processing.recommendation_system.rec_weights import RecWeights
 from yuri_manga_processing.preprocessing import mappings
 from yuri_manga_processing.yuri_manga import YuriManga
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
 from math_helper.avg import weighted_avg, exponential_decay
 
 
@@ -44,7 +43,7 @@ class RecommendationEngine:
         for manga in self.plan_to_read:
             result = self.user_preferences.compare(manga)
 
-            similarities = [cosine_similarity(fav.tfidf_description, manga.tfidf_description) for fav in self.favorites]
+            similarities = [manga.compare_description(fav) for fav in self.favorites]
 
             similarities = sorted(similarities, reverse=True)
             weights = [exponential_decay(i) for i in similarities]
@@ -55,7 +54,6 @@ class RecommendationEngine:
             final_results[manga] = weighted_avg(final_values, self.rec_weights.weights)
 
         top_5 = sorted(final_results, key=final_results.get, reverse=True)[:5]
-
         return [manga_rec.manga for manga_rec in top_5]
 
     def _fit(self):
