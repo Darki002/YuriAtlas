@@ -1,8 +1,8 @@
 class RecWeights:
-    default_format_weight: float = 0.2
-    default_nsfw_level_weight: float = 0.4
-    default_genre_weight: float = 0.7
-    default_description_weight: float = 0.6
+    default_format_weight: float = 0.1
+    default_nsfw_level_weight: float = 0.3
+    default_genre_weight: float = 0.8
+    default_description_weight: float = 0.5
 
     weights: list[float] = \
         [default_format_weight, default_nsfw_level_weight, default_genre_weight, default_description_weight]
