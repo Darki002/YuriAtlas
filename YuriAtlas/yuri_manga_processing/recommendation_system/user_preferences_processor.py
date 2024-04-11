@@ -29,7 +29,7 @@ class UserPreferencesProcessor:
             raise ValueError("NSFW Levels have not been processed")
 
         manga_nsfw_level_count = self.processed_nsfw_levels.get(manga.nsfw_level, 0)
-        max_nsfw_level_count = max(self.processed_nsfw_levels.values())
+        max_nsfw_level_count = sum(self.processed_nsfw_levels.values())
         return manga_nsfw_level_count / max_nsfw_level_count
 
     # Format
@@ -51,7 +51,7 @@ class UserPreferencesProcessor:
             raise ValueError("Format has not been processed")
 
         manga_format_count = self.processed_format.get(manga.manga_format, 0)
-        max_format_count = max(self.processed_format.values())
+        max_format_count = sum(self.processed_format.values())
         return manga_format_count / max_format_count
 
     # Genres
