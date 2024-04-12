@@ -1,5 +1,4 @@
 from data_access.yuri_manga_spreadsheet import spreadsheet_access
-from yuri_manga_processing.yuri_manga import YuriManga
 
 
 def learn(mangas_genres: list[list[str]], genres: list[str]) -> list[list[int]]:
