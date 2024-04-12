@@ -12,6 +12,7 @@ base_path: str = os.path.dirname(__file__)
 env_path: str = os.path.join(base_path, ".env")
 load_dotenv(env_path)
 
+IGNORED_GENRES = ["girls love", "yuri", "girl's love"]
 URL = "https://api.myanimelist.net/v2/users/{username}/mangalist"
 
 
@@ -121,6 +122,8 @@ def _get_genre_names(genre_list):
     genre_names = []
 
     for genre in genre_list:
-        genre_names.append(genre["name"])
-
+        name: str = genre["name"]
+        if name.lower() in IGNORED_GENRES:
+            continue
+        genre_names.append(name)
     return genre_names
