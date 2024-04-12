@@ -31,6 +31,8 @@ def main():
     result = learn(all_mangas, all_genres)
     print(result)
 
+    # TODO: Create Embedding and save it as a file
+
 
 if __name__ == '__main__':
     print('Start...')
