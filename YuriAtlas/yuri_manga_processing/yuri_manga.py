@@ -124,6 +124,9 @@ class YuriManga:
          .process_user_reading_status())
         return self
 
+    def equal(self, other: 'YuriManga') -> bool:
+        return self.manga_id == other.manga_id
+
     def __str__(self) -> str:
         result = (f'Title: {self.title} \n'
                   f'Alternative Titles: {self.alternative_titles} \n'

@@ -120,7 +120,7 @@ def _map_to_yuri_mang(data, index: int) -> YuriManga | None:
     }
 
     return YuriManga(
-        manga_id=str(index),
+        manga_id="YGS-" + str(index),
         source=MangaSource.SpreadSheet,
         title=data[0],
         alternative_titles=alt_titles,
