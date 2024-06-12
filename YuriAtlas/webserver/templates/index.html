@@ -17,12 +17,16 @@
         <br/>
         <p><b>Genres</b></p>
         <ul style="text-decoration: none">
-            {% for genre in genres %}
-                <li>
+            {% if genres %}
+                {% for genre in genres %}
+                    <li>
                     <label for="{{ genre }}">{{ genre }}</label>
                     <input type="checkbox" id="{{ genre }}" name="{{ genre }}">
                 </li>
-            {% endfor %}
+                {% endfor %}
+            {% else %}
+                <p>No genres available.</p>
+            {% endif %}
         </ul>
         <button type="submit">Submit</button>
     </form>
